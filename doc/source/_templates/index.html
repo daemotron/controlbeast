@@ -1,0 +1,71 @@
+{% extends "layout.html" %}
+{% set title = _('Overview') %}
+{% block body %}
+    <h1>Welcome</h1>
+
+    <p>
+        ControlBeast is a command line based software helping <a href="http://www.freebsd.org/">FreeBSD</a> system
+        administrators with automatizing repetitive tasks and managing all information related to a server's
+        configuration in one place. ControlBeast has been developed with security in mind, but also following the
+        <a href="http://en.wikipedia.org/wiki/KISS_principle">KISS principle</a> &ndash; unnecessary complexity has
+        always been one of the most common sources for security issues.
+    </p>
+    <p>
+        ControlBeast heavily relies on <a href="http://yaml.org/">YAML</a> to store all kinds of configuration
+        information, making it easy to edit and also later <em>understand</em> them. This approach allows maintaining
+        the whole configuration information within a version management system.
+        <a href="http://git-scm.com/">Git</a>, one of the most powerful distributed SCM systems has been chosen for
+        this purpose, building a strong basis for many of ControlBeast's features.
+    </p>
+    <p>
+        Speaking of features, among many others, the following ones offered by ControlBeast are probably worth
+        mentioning:
+    </p>
+    <ul>
+        <li>
+            Secure <strong>remote deployment</strong> mechanism via SSH ensures configuration integrity of the managed
+            system
+        </li>
+        <li>
+            <strong>Bare metal (re&ndash;)install</strong> functionality allows cloning of an existing system onto a
+            new machine, disaster recovery, etc.
+        </li>
+        <li>
+            Support of FreeBSD's <strong>jails</strong> for virtualisation purposes.
+        </li>
+    </ul>
+    <p>
+        ControlBeast is licensed under the terms of the
+        <a href="http://www.opensource.org/licenses/isc-license.txt" title="ISC License">ISC License</a>.
+        ControlBeast is free software; you are free to change and redistribute it. However, there is <em>no warranty</em>,
+        to the extent permitted by law.
+    </p>
+
+    <h2 style="margin-bottom: 0">Documentation</h2>
+
+    <table class="contentstable" align="center" style="margin-left: 30px">
+        <tr>
+            <td width="50%">
+                <p class="biglink">
+                    <a class="biglink" href="{{ pathto("10_user/index") }}">User&#8217;s guide</a><br/>
+                    <span class="linkdescr">comprehensive manual for ControlBeast users</span>
+                </p>
+                <p class="biglink">
+                    <a class="biglink" href="{{ pathto("contents") }}">Contents</a><br/>
+                    <span class="linkdescr">for a complete overview</span>
+                </p>
+            </td>
+            <td width="50%">
+                <p class="biglink">
+                    <a class="biglink" href="{{ pathto("search") }}">Search page</a><br/>
+                    <span class="linkdescr">search the documentation</span>
+                </p>
+                <p class="biglink">
+                    <a class="biglink" href="{{ pathto("genindex") }}">General index</a><br/>
+                    <span class="linkdescr">all functions, classes, terms</span>
+                </p>
+            </td>
+        </tr>
+    </table>
+
+{% endblock %}

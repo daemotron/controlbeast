@@ -1,0 +1,14 @@
+<h3>Download</h3>
+{% if 'dev' in release %}
+<p>
+    This documentation is for version <strong>{{ version }}</strong>, which is not released yet.
+</p>
+<p>
+    You can retrieve it from our <a href="https://github.com/daemotron/controlbeast">GitHub repository</a>,
+    but please note that no support will be provided for pre-release versions.
+</p>
+{% else %}
+<p>
+    Current version: <strong>{{ version }}</strong>
+</p>
+{% endif %}
