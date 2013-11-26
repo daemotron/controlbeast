@@ -78,6 +78,8 @@ class CbSCMWrapper(object):
                 if status:
                     self._scm_binary_path = binary
                     break
+        if not self._scm_binary_path:
+            raise CbSCMBinaryError(self._scm_binary_name)
 
     def init(self, *args, **kwargs):
         """
