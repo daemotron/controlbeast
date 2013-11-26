@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
 """
-    pytain.cli.commands.version
-    ~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    controlbeast.cli.version
+    ~~~~~~~~~~~~~~~~~~~~~~~~
 
-    :copyright: Copyright 2012 by the Pytain team, see AUTHORS.
+    :copyright: Copyright 2013 by the ControlBeast team, see AUTHORS.
     :license: ISC, see LICENSE for details.
 """
 

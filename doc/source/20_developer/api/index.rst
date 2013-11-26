@@ -5,3 +5,4 @@ ControlBeast API Documentation
    :maxdepth: 2
 
    cli
+   scm

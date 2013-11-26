@@ -14,3 +14,19 @@ ControlBeast Command Line Interface
 .. autoclass:: CbCommand
    :members:
    :private-members:
+
+.. currentmodule:: controlbeast.cli.help
+
+.. automodule:: controlbeast.cli.help
+
+.. autoclass:: HelpCommand
+   :members:
+   :private-members:
+
+.. currentmodule:: controlbeast.cli.version
+
+.. automodule:: controlbeast.cli.version
+
+.. autoclass:: VersionCommand
+   :members:
+   :private-members:
