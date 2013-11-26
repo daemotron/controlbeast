@@ -2,7 +2,7 @@ ControlBeast Version Management Interface
 =========================================
 
 General SCM Interface
-~~~~~~~~~~~~~~~~~~~~~
+---------------------
 
 .. currentmodule:: controlbeast.scm
 
@@ -14,8 +14,14 @@ General SCM Interface
    :members:
    :private-members:
 
+Function-oriented Interface
+---------------------------
+
+.. autofunction:: scm_init
+
+
 Exceptions
-~~~~~~~~~~
+----------
 
 .. currentmodule:: controlbeast.scm.base
 
@@ -32,7 +38,7 @@ Exceptions
    :private-members:
 
 Git SCM Interface
-~~~~~~~~~~~~~~~~~
+-----------------
 
 .. currentmodule:: controlbeast.scm.git
 
