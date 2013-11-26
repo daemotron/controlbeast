@@ -23,6 +23,14 @@ ControlBeast Command Line Interface
    :members:
    :private-members:
 
+.. currentmodule:: controlbeast.cli.init
+
+.. automodule:: controlbeast.cli.init
+
+.. autoclass:: InitCommand
+   :members:
+   :private-members:
+
 .. currentmodule:: controlbeast.cli.version
 
 .. automodule:: controlbeast.cli.version
