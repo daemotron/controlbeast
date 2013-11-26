@@ -1,7 +1,7 @@
-ControlBeast Developer's Guide
+ControlBeast API Documentation
 ==============================
 
 .. toctree::
    :maxdepth: 2
 
-   api/index
+   cli
