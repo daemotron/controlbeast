@@ -1,0 +1,43 @@
+# -*- coding: utf-8 -*-
+"""
+    controlbeast.scm.base
+    ~~~~~~~~~~~~~~~~~~~~~
+
+    :copyright: Copyright 2013 by the ControlBeast team, see AUTHORS.
+    :license: ISC, see LICENSE for details.
+"""
+import os
+
+
+class CbSCMWrapper(object):
+    """
+    The class from which all SCM interface wrappers derive
+    """
+
+    _scm_binary_name = None
+    _scm_binary_path = None
+
+    def __init__(self):
+        """
+        The CbSCMWrapper constructor
+        """
+        self.detect_binary()
+
+    def detect_binary(self):
+        """
+        Look for the scm binary and store its path in _scm_binary_path
+        """
+        # only act if _scm_binary_name has been defined
+        if self._scm_binary_name:
+            for path in os.get_exec_path():
+                binary = os.path.join(path, self._scm_binary_name)
+                # perform test on effective [g,u]uid on platforms supporting this in order to
+                # grant respecting an eventually set SUID bit
+                if os.access in os.supports_effective_ids:
+                    status = os.access(binary, os.X_OK, effective_ids=True)
+                else:
+                    status = os.access(binary, os.X_OK, effective_ids=False)
+
+                if status:
+                    self._scm_binary_path = binary
+                break
