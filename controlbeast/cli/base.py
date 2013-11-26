@@ -34,6 +34,8 @@ class CbCommand(object):
     """
 
     _help = ''
+    _argv = None
+    _args = None
     _arg_list = ()
 
     def __init__(self, command, executable):
@@ -41,30 +43,31 @@ class CbCommand(object):
         self._command = command
         self._executable = os.path.basename(executable)
 
-
     def usage(self):
         """
         Generate a usage message for the command
+
+        :returns string with usage message
         """
-        umsg = None
+        #noinspection PyUnusedLocal
+        usage_message = None
         if self._arg_list:
-            umsg = "usage: %s %s [options]" % (self._executable, self._command)
+            usage_message = "usage: %s %s [options]" % (self._executable, self._command)
         else:
-            umsg = "usage: %s %s" % (self._executable, self._command)
+            usage_message = "usage: %s %s" % (self._executable, self._command)
         if self._help:
-            umsg += "\n\n%s" % self._help
+            usage_message += "\n\n%s" % self._help
         if self._arg_list:
-            umsg += "\n\nAvailable options:\n"
+            usage_message += "\n\nAvailable options:\n"
             for arg in self._arg_list:
                 if len(arg) > 1:
                     if 'help' in arg[1]:
-                        umsg += "  {: <15s}   {: <60s}\n".format(', '.join(arg[0]), arg[1]['help'])
+                        usage_message += "  {: <15s}   {: <60s}\n".format(', '.join(arg[0]), arg[1]['help'])
                     else:
-                        umsg += "  {: <15s}   {: <60s}\n".format(', '.join(arg[0]), 'no description available')
+                        usage_message += "  {: <15s}   {: <60s}\n".format(', '.join(arg[0]), 'no description available')
                 elif len(arg) == 1:
-                    umsg += "  {: <15s}   {: <60s}\n".format(', '.join(arg[0]), 'no description available')
-        return umsg
-
+                    usage_message += "  {: <15s}   {: <60s}\n".format(', '.join(arg[0]), 'no description available')
+        return usage_message
 
     def execute(self, argv):
         """
@@ -83,7 +86,6 @@ class CbCommand(object):
             self._args = None
         self.handle()
 
-
     def handle(self):
         """
         The handle method contains the actual code for the command.
@@ -92,11 +94,9 @@ class CbCommand(object):
         self._status = -1
         raise NotImplementedError()
 
-
     @property
     def status(self):
         return self._status
-
 
     @property
     def help(self):
