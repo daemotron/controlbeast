@@ -1,6 +1,9 @@
 ControlBeast Version Management Interface
 =========================================
 
+General SCM Interface
+~~~~~~~~~~~~~~~~~~~~~
+
 .. currentmodule:: controlbeast.scm
 
 .. automodule:: controlbeast.scm
@@ -10,6 +13,26 @@ ControlBeast Version Management Interface
 .. autoclass:: CbSCMWrapper
    :members:
    :private-members:
+
+Exceptions
+~~~~~~~~~~
+
+.. currentmodule:: controlbeast.scm.base
+
+.. autoclass:: CbSCMError
+   :members:
+   :private-members:
+
+.. autoclass:: CbSCMBinaryError
+   :members:
+   :private-members:
+
+.. autoclass:: CbSCMInitError
+   :members:
+   :private-members:
+
+Git SCM Interface
+~~~~~~~~~~~~~~~~~
 
 .. currentmodule:: controlbeast.scm.git
 
