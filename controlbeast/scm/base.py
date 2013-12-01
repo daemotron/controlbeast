@@ -92,12 +92,12 @@ class CbSCMWrapper(object):
         try:
             out, err = process.communicate()
         except subprocess.CalledProcessError:
-            raise exception(scm_name=self._scm_binary_name, path=path, text=err)
+            raise exception(scm_name=self._scm_binary_name, path=path, text=err.decode(errors='replace'))
         except (OSError, FileNotFoundError):
             raise CbSCMBinaryError(scm_name=self._scm_binary_name)
         # Popen.communicate usually does not raise an exception, so we have to catch this manually:
         if err:
-            raise exception(scm_name=self._scm_binary_name, path=path, text=err)
+            raise exception(scm_name=self._scm_binary_name, path=path, text=err.decode(errors='replace'))
         return out, err
 
     def detect_binary(self):
