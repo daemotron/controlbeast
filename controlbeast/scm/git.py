@@ -7,9 +7,8 @@
     :license: ISC, see LICENSE for details.
 """
 import os
-import subprocess
 
-from controlbeast.scm.base import CbSCMWrapper, CbSCMBinaryError, CbSCMInitError, CbSCMCommitError
+from controlbeast.scm.base import CbSCMWrapper, CbSCMInitError, CbSCMCommitError
 
 
 class Git(CbSCMWrapper):
