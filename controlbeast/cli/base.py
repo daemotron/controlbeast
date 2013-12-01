@@ -29,7 +29,7 @@ class CbCommand(object):
         The first element is a tuple containing the short and long
         option identifiers; e. g. ('-f', '--foo')
         The second element is a dictionary containing arbitrary elements.
-        All keyword arguments accepted by :py:func:`argparse.ArgumentParser.add_argument`
+        All keyword arguments accepted by :py:meth:`argparse.ArgumentParser.add_argument`
         are allowed as key names within this dictionary.
     """
 
