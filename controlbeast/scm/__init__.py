@@ -20,6 +20,7 @@ _scm_handler = None
 from controlbeast.scm.base import CbSCMError
 from controlbeast.scm.base import CbSCMBinaryError
 from controlbeast.scm.base import CbSCMInitError
+from controlbeast.scm.base import CbSCMCommitError
 
 
 def _load_scm_handler():
@@ -71,3 +72,17 @@ def scm_init(*args, **kwargs):
         _load_scm_handler()
 
     _scm_handler.init(*args, **kwargs)
+
+
+def scm_commit(*args, **kwargs):
+    """
+    Commit content of an existing SCM repository.
+
+    :param path:    Path on the file system where the repository resides. If not specified, it defaults to the
+                    current work directory.
+    :param message: Commit message to be attached to the commit record.
+    """
+    if not _scm_handler:
+        _load_scm_handler()
+
+    _scm_handler.commit(*args, **kwargs)

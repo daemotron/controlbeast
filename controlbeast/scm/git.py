@@ -9,7 +9,7 @@
 import os
 import subprocess
 
-from controlbeast.scm.base import CbSCMWrapper, CbSCMBinaryError, CbSCMInitError
+from controlbeast.scm.base import CbSCMWrapper, CbSCMBinaryError, CbSCMInitError, CbSCMCommitError
 
 
 class Git(CbSCMWrapper):
@@ -37,18 +37,42 @@ class Git(CbSCMWrapper):
         if not path:
             path = os.path.abspath(os.getcwd())
 
-        process = subprocess.Popen(
-            [self._scm_binary_path, 'init', path], stderr=subprocess.PIPE, stdout=subprocess.PIPE
-        )
-        #noinspection PyUnusedLocal
-        out = err = ""
-        try:
-            out, err = process.communicate()
-        except subprocess.CalledProcessError:
-            raise CbSCMInitError(path, err)
-        except (OSError, FileNotFoundError):
-            raise CbSCMBinaryError(self._scm_binary_name)
+        self._execute([self._scm_binary_path, 'init', path], path, CbSCMInitError)
 
-        # Popen.communicate usually does not raise an exception, so we have to catch this case manually
-        if err:
-            raise CbSCMInitError(path, err.decode(errors='replace'))
+    def commit(self, *args, **kwargs):
+        """
+        Commit to a git repository.
+
+        :param path:    Path on the file system where the repository resides. If not specified, it defaults to the
+                        current work directory.
+        :param message: Commit message to be attached to the commit record.
+        """
+        path = None
+        message = ""
+
+        if len(args) > 0:
+            path = args[0]
+
+        if len(args) > 2:
+            message = args[1]
+
+        if 'path' in kwargs:
+            path = kwargs['path']
+
+        if 'message' in kwargs:
+            message = kwargs['message']
+
+        if not path:
+            path = os.path.abspath(os.getcwd())
+
+        # Git can only commit in the current work directory, so we have to change the current working
+        # directory to the path of the repository we are expected to execute the commit on.
+        current_dir = os.path.abspath(os.getcwd())
+        os.chdir(path)
+
+        # Before committing to git, changes have to be staged for the commit process
+        self._execute([self._scm_binary_path, 'add', '.'], path, CbSCMCommitError)
+        self._execute([self._scm_binary_path, 'commit', '-a', '-m', message], path, CbSCMCommitError)
+
+        # Switch back to the previous working directory
+        os.chdir(current_dir)

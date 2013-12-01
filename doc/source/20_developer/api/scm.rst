@@ -19,6 +19,8 @@ Function-oriented Interface
 
 .. autofunction:: scm_init
 
+.. autofunction:: scm_commit
+
 
 Exceptions
 ----------
@@ -34,6 +36,10 @@ Exceptions
    :private-members:
 
 .. autoclass:: CbSCMInitError
+   :members:
+   :private-members:
+
+.. autoclass:: CbSCMCommitError
    :members:
    :private-members:
 
