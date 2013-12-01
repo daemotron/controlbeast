@@ -7,13 +7,21 @@
     :license: ISC, see LICENSE for details.
 """
 import os
+import subprocess
+from controlbeast.utils.dynamic import CbDynamic
 
 
-class CbSCMError(Exception):
+class CbSCMError(CbDynamic, Exception):
     """
     Basic SCM Exception class
     """
-    pass
+    def __init__(self, *args, **kwargs):
+        """
+        """
+        self._path = ""
+        self._text = ""
+        self._scm_name = ""
+        super().__init__(*args, **kwargs)
 
 
 class CbSCMBinaryError(CbSCMError):
@@ -22,11 +30,11 @@ class CbSCMBinaryError(CbSCMError):
 
     This exception is raised when the expected scm binary cannot be found or is not accessible.
     """
-    def __init__(self, scm_name):
-        self._scm_name = scm_name
-
     def __str__(self):
-        return "{scm} is not available on your computer.".format(scm=self._scm_name)
+        if self._scm_name:
+            return "{scm} is not available on your computer.".format(scm=self._scm_name)
+        else:
+            return "Expected SCM is not available on your computer."
 
 
 class CbSCMInitError(CbSCMError):
@@ -35,15 +43,24 @@ class CbSCMInitError(CbSCMError):
 
     This exception is raised when the initialisation of a SCM repository failed.
     """
-    def __init__(self, path, text):
-        self._path = path
-        self._text = text
-
     def __str__(self):
         if self._text:
             return "Initialisation of {path} failed:\n{text}".format(path=self._path, text=self._text)
         else:
             return "Initialisation of {path} failed for unknown reason".format(path=self._path)
+
+
+class CbSCMCommitError(CbSCMError):
+    """
+    SCM Commit Error
+
+    This exception is raised when the commit to a SCM repository failed.
+    """
+    def __str__(self):
+        if self._text:
+            return "Commit to {path} failed:\n{text}".format(path=self._path, text=self._text)
+        else:
+            return "Commit to {path} failed for unknown reason.".format(path=self._path)
 
 
 class CbSCMWrapper(object):
@@ -59,6 +76,29 @@ class CbSCMWrapper(object):
         The CbSCMWrapper constructor
         """
         self.detect_binary()
+
+    def _execute(self, arguments, path, exception):
+        """
+        Run the command described by arguments and catch eventual exceptions.
+
+        :param arguments: list of arguments as expected by the various :py:mod:`subprocess` functions
+        :param exception: reference to the exception class to be raised if anything goes wrong
+        :return: stdout and stderr captures from the process execution
+        :rtype: tuple of strings
+        """
+        #noinspection PyUnusedLocal
+        err = out = ""
+        process = subprocess.Popen(arguments, stderr=subprocess.PIPE, stdout=subprocess.PIPE)
+        try:
+            out, err = process.communicate()
+        except subprocess.CalledProcessError:
+            raise exception(scm_name=self._scm_binary_name, path=path, text=err)
+        except (OSError, FileNotFoundError):
+            raise CbSCMBinaryError(scm_name=self._scm_binary_name)
+        # Popen.communicate usually does not raise an exception, so we have to catch this manually:
+        if err:
+            raise exception(scm_name=self._scm_binary_name, path=path, text=err)
+        return out, err
 
     def detect_binary(self):
         """
@@ -85,5 +125,12 @@ class CbSCMWrapper(object):
         """
         The init method contains the actual code for the repository initialisation.
         This method needs to be implemented for each SCM wrapper class
+        """
+        raise NotImplementedError
+
+    def commit(self, *args, **kwargs):
+        """
+        The commit method contains the actual code for committing updated content into
+        the repository. This method needs to be implemented for each SCM wrapper class
         """
         raise NotImplementedError
