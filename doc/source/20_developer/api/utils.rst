@@ -23,6 +23,13 @@ ControlBeast Utilities
 
 .. autofunction:: load_member
 
+.. currentmodule:: controlbeast.utils.singleton
+
+.. automodule:: controlbeast.utils.singleton
+
+.. autoclass:: CbSingleton
+   :members:
+
 .. currentmodule:: controlbeast.utils.version
 
 .. automodule:: controlbeast.utils.version
