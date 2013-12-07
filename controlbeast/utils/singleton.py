@@ -22,9 +22,9 @@ class CbSingleton:
     * The actual instance will not be created before :py:meth:`~controlbeast.utils.singleton.CbSingleton.get_instance`
       has been called (lazy behaviour).
     * The decorated class cannot be inherited from. Therefore, this decorator can only be applied to final classes.
-    * This decorator shows good manners and takes care of ``__doc__``, ``__module__`` and ``__name__`` context of the
-      decorated class. This allows care-free handling in conjunction with automated documentation extraction tools
-      such as Sphinx autodoc or similar.
+    * This decorator shows good manners and takes care of ``__doc__``, ``__module__``, ``__name__``, ``__annotations__``
+      and ``__qualname__`` context of the decorated class. This allows care-free handling in conjunction with
+      automated documentation extraction tools such as Sphinx autodoc or similar.
     """
 
     _instance = None
@@ -37,6 +37,10 @@ class CbSingleton:
             self.__module__ = decorated.__module__
         if hasattr(decorated, '__name__'):
             self.__name__ = decorated.__name__
+        if hasattr(decorated, '__annotations__'):
+            self.__annotations__ = decorated.__annotations__
+        if hasattr(decorated, '__qualname__'):
+            self.__qualname__ = decorated.__qualname__
 
     def get_instance(self):
         """
