@@ -19,7 +19,7 @@ def get_conf(key):
     """
     Get a global configuration value by its key
 
-    :param key: string identifying the requested configuration value
+    :param str key: string identifying the requested configuration value
     :returns the requested configuration value or None
     """
     if key in DEFAULTS:

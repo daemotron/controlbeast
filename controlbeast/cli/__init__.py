@@ -30,7 +30,7 @@ def get_command(command_name):
     """
     Get a command class by its name
 
-    :param command_name: The name of the command class to be loaded
+    :param str command_name: The name of the command class to be loaded
     :return: command class reference which can be instantiated
     """
     global _commands
@@ -50,7 +50,7 @@ def usage(executable):
     """
     Print a global usage message
 
-    :param executable: Name of the executable
+    :param str executable: Name of the executable
     """
     global _commands
     if not _commands:
@@ -72,8 +72,8 @@ def dispatch(executable, argv):
     Function being called from the executable to launch the CLI.
     This is the initial entrance point for any ControlBeast processing.
 
-    :param executable: Name of the executable
-    :param argv: vector with command line arguments
+    :param str executable: Name of the executable
+    :param list argv: vector with command line arguments
     """
     if len(argv) > 1:
         cmd_class = get_command(argv[1])

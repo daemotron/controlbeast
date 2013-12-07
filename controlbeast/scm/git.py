@@ -22,8 +22,8 @@ class Git(CbSCMWrapper):
         """
         Initialise a git repository.
 
-        :param path: Path on the file system where the repository should reside. If not specified, it defaults to the
-                     current work directory.
+        :param str path: Path on the file system where the repository should reside. If not specified, it defaults to the
+                         current work directory.
         """
         path = None
 
@@ -42,9 +42,9 @@ class Git(CbSCMWrapper):
         """
         Commit to a git repository.
 
-        :param path:    Path on the file system where the repository resides. If not specified, it defaults to the
-                        current work directory.
-        :param message: Commit message to be attached to the commit record.
+        :param str path:    Path on the file system where the repository resides. If not specified, it defaults to the
+                            current work directory.
+        :param str message: Commit message to be attached to the commit record.
         """
         path = None
         message = ""

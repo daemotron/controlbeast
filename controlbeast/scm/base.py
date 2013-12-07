@@ -81,8 +81,8 @@ class CbSCMWrapper(object):
         """
         Run the command described by arguments and catch eventual exceptions.
 
-        :param arguments: list of arguments as expected by the various :py:mod:`subprocess` functions
-        :param exception: reference to the exception class to be raised if anything goes wrong
+        :param list arguments: list of arguments as expected by the various :py:mod:`subprocess` functions
+        :param exception:      reference to the exception class to be raised if anything goes wrong
         """
         #noinspection PyUnusedLocal
         err = out = ""

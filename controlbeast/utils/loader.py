@@ -16,7 +16,7 @@ def __filter_members(item):
     """
     Filter function to detect classes within a module or package
 
-    :param item: the item to be tested with this filter
+    :param str item: the item to be tested with this filter
     """
     exclude = (
         re.escape('__builtins__'),
@@ -36,7 +36,7 @@ def __filter_modules(item):
     """
     Filter function to detect processor modules and packages
 
-    :param item: the item to be tested with this filter
+    :param str item: the item to be tested with this filter
     """
     exclude = (
         re.escape('__init__.py'),
@@ -51,7 +51,7 @@ def detect_class_modules(module, parent=object):
     Detect available class modules or packages and return a dictionary of valid class names, referring to
     the module they are contained within.
 
-    :param module: the module or package to be scanned for classes
+    :param str module: the module or package to be scanned for classes
     :param parent: the class potential candidates must be derived off
     """
 
@@ -100,8 +100,8 @@ def load_member(module, member):
     """
     Load a member (function, class, ...) from a module and return it
 
-    :param module: the module or package name where the class should be loaded from
-    :param member: the name of the member to be loaded
+    :param str module: the module or package name where the class should be loaded from
+    :param str member: the name of the member to be loaded
     """
     try:
         module = importlib.import_module(module)

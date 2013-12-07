@@ -45,7 +45,7 @@ def get_scm(scm_name):
     """
     Get a SCM wrapper class by its name.
 
-    :param scm_name: The name or alias of the SCM wrapper class to be loaded
+    :param str scm_name: The name or alias of the SCM wrapper class to be loaded
     :return: SCM wrapper class reference which can be instantiated
     """
     global _scm_wrappers
@@ -65,8 +65,8 @@ def scm_init(*args, **kwargs):
     """
     Initialise a new SCM repository.
 
-    :param path: Path on the file system where the repository should reside. If not specified, it defaults to the
-                 current work directory.
+    :param str path: Path on the file system where the repository should reside. If not specified, it defaults to the
+                     current work directory.
     """
     if not _scm_handler:
         _load_scm_handler()
@@ -78,9 +78,9 @@ def scm_commit(*args, **kwargs):
     """
     Commit content of an existing SCM repository.
 
-    :param path:    Path on the file system where the repository resides. If not specified, it defaults to the
-                    current work directory.
-    :param message: Commit message to be attached to the commit record.
+    :param str path:    Path on the file system where the repository resides. If not specified, it defaults to the
+                        current work directory.
+    :param str message: Commit message to be attached to the commit record.
     """
     if not _scm_handler:
         _load_scm_handler()
