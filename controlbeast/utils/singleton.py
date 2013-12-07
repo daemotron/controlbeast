@@ -13,29 +13,40 @@ class CbSingleton:
     Auxiliary class to ease implementing lazy singletons.
     This class must be applied as a decorator instead of inheriting from this class.
 
-    The decorated class can define one `__init__` function, but this constructor is restricted to the `self` argument.
+    **Restrictions**
 
-    To get the singleton instance, use the `get_instance` method. Trying to use `__call__` will result in a
-    `TypeError` being raised. The actual instance will not be created before `get_instance` has been called
-    (lazy behaviour).
-
-    Other limitations: The decorated class cannot be inherited from.
+    * The decorated class can define one ``__init__`` function, but this constructor
+      is restricted to the ``self`` argument.
+    * To get the singleton instance, the :py:meth:`~controlbeast.utils.singleton.CbSingleton.get_instance`
+      method has to be used. Trying to use ``__call__`` will result in a :py:exc:`TypeError` being raised.
+    * The actual instance will not be created before :py:meth:`~controlbeast.utils.singleton.CbSingleton.get_instance`
+      has been called (lazy behaviour).
+    * The decorated class cannot be inherited from. Therefore, this decorator can only be applied to final classes.
+    * This decorator shows good manners and takes care of ``__doc__``, ``__module__`` and ``__name__`` context of the
+      decorated class. This allows care-free handling in conjunction with automated documentation extraction tools
+      such as Sphinx autodoc or similar.
     """
+
+    _instance = None
 
     def __init__(self, decorated):
         self._decorated = decorated
+        if hasattr(decorated, '__doc__'):
+            self.__doc__ = decorated.__doc__
+        if hasattr(decorated, '__module__'):
+            self.__module__ = decorated.__module__
+        if hasattr(decorated, '__name__'):
+            self.__name__ = decorated.__name__
 
     def get_instance(self):
         """
         Returns the singleton instance. Upon its first call, it creates a
-        new instance of the decorated class and calls its `__init__` method.
+        new instance of the decorated class and calls its ``__init__`` method.
         On all subsequent calls, the already created instance is returned.
         """
-        try:
-            return self._instance
-        except AttributeError:
+        if not self._instance:
             self._instance = self._decorated()
-            return self._instance
+        return self._instance
 
     def __call__(self):
         raise TypeError('Singletons must be accessed through `get_instance()`.')
