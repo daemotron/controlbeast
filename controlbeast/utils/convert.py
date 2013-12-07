@@ -21,6 +21,8 @@ def to_bytes(value):
         return bytes(value)
     elif isinstance(value, bytes):
         return value
+    elif value is None:
+        return b''
     else:
         return bytes(str(value), 'utf-8', 'replace')
 
@@ -34,5 +36,7 @@ def to_str(value):
     """
     if isinstance(value, bytes) or isinstance(value, bytearray):
         return value.decode('utf-8', 'replace')
+    elif value is None:
+        return ''
     else:
         return str(value)
