@@ -6,4 +6,5 @@ ControlBeast API Documentation
 
    cli
    scm
+   ssh
    utils
