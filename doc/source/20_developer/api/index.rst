@@ -5,6 +5,7 @@ ControlBeast API Documentation
    :maxdepth: 2
 
    cli
+   keystore
    scm
    ssh
    utils
