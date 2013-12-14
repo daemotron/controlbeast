@@ -73,13 +73,15 @@ class CbBinary(object):
                     self._binary_path = binary
                     break
 
-    def _execute(self):
+    def _execute(self, close_fds=True):
         """
         Create a child process executing the external command.
         """
         arguments = [self._binary_path]
         arguments.extend(self._arguments)
-        process = subprocess.Popen(arguments, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        process = subprocess.Popen(
+            arguments, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE, close_fds=close_fds
+        )
         try:
             self._stdout, self._stderr = process.communicate(input=self._stdin, timeout=self._timeout)
         except subprocess.TimeoutExpired:
