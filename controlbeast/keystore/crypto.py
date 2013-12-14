@@ -89,6 +89,7 @@ class CbKsCrypto(CbBinary):
         operation while communicating with the OpenSSL process via pipes.
 
         Before calling this method, the environment has to be properly set up:
+
         * for **decryption**, ``self.stdin`` must be set to ``None``
         * for **encryption**, ``self.stdin`` must be set to contain the plaintext to be encrypted
 
