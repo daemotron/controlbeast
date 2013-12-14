@@ -1,6 +1,14 @@
 ControlBeast Utilities
 ======================
 
+.. currentmodule:: controlbeast.utils.binary
+
+.. automodule:: controlbeast.utils.binary
+
+.. autoclass:: controlbeast.utils.binary.CbBinary
+   :members:
+   :private-members:
+
 .. currentmodule:: controlbeast.utils.convert
 
 .. automodule:: controlbeast.utils.convert
