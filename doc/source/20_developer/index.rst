@@ -5,3 +5,4 @@ ControlBeast Developer's Guide
    :maxdepth: 2
 
    api/index
+   test/index
