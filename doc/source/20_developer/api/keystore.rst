@@ -10,6 +10,18 @@ ControlBeast Key Store Interface
    :special-members:
 
 
+Exceptions
+----------
+
+.. currentmodule:: controlbeast.keystore
+
+.. autoexception:: CbKsError
+
+.. autoexception:: CbKsIOError
+
+.. autoexception:: CbKsPasswordError
+
+
 The File Backend Interfaces
 ---------------------------
 

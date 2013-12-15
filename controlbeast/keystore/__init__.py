@@ -8,4 +8,5 @@
 """
 
 # import for convenience
-from controlbeast.keystore.handler import CbKeyStore
+from controlbeast.keystore.base import CbKeyStore
+from controlbeast.keystore.exception import CbKsError, CbKsPasswordError, CbKsIOError

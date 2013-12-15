@@ -14,6 +14,7 @@ import tempfile
 import yaml
 from controlbeast.keystore.plain import CbKsPlain
 from controlbeast.keystore.crypto import CbKsCrypto
+from controlbeast.keystore.exception import CbKsPasswordError
 
 
 class CbKeyStore(UserDict):
@@ -54,6 +55,9 @@ class CbKeyStore(UserDict):
     #: flag signalizing whether this store is temporary or not
     _tmp = False
 
+    #: flag signalizing whether this store is read-only or not
+    _read_only = False
+
     def __init__(self, file='', passphrase='', dict=None, **kwargs):
         """
         Key store constructor
@@ -70,6 +74,8 @@ class CbKeyStore(UserDict):
         else:
             self._backend = CbKsPlain(file=self._file)
 
+        self._read_only = self._backend.read_only
+
         if self._backend.plaintext:
             try:
                 data = yaml.safe_load(self._backend.plaintext)
@@ -78,7 +84,12 @@ class CbKeyStore(UserDict):
         else:
             data = {}
 
-        if dict is not None:
+        # Illegal read, e. g. due to a wrong / invalid password
+        if self._backend.return_code != os.EX_OK:
+            if 'bad decrypt' in self._backend.stderr:
+                raise CbKsPasswordError(filename=self._file)
+
+        if dict is not None and self._read_only is not True:
             data.update(dict)
 
         super(CbKeyStore, self).__init__(dict=data, **kwargs)
@@ -88,16 +99,22 @@ class CbKeyStore(UserDict):
         Overrides default ``__setitem__`` method. Functionality is identical, except data are synced to the
         backend after executing the data update.
         """
-        super(CbKeyStore, self).__setitem__(key, item)
-        self._sync()
+        if not self._read_only:
+            super(CbKeyStore, self).__setitem__(key, item)
+            self._sync()
+        else:
+            raise TypeError("This key store is read-only.")
 
     def __delitem__(self, key):
         """
         Overrides default ``__delitem__`` method. Functionality is identical, except data are synced to the
         backend after executing the data update.
         """
-        super(CbKeyStore, self).__delitem__(key)
-        self._sync()
+        if not self._read_only:
+            super(CbKeyStore, self).__delitem__(key)
+            self._sync()
+        else:
+            raise TypeError("This key store is read-only.")
 
     def __del__(self):
         """
@@ -111,4 +128,21 @@ class CbKeyStore(UserDict):
         Synchronize current data into the backend. This method is called every time the data stored in
         this key store are modified.
         """
-        self._backend.plaintext = yaml.dump(self.data, default_flow_style=False)
+        if not self._read_only:
+            self._backend.plaintext = yaml.dump(self.data, default_flow_style=False)
+        else:
+            raise TypeError("This key store is read-only.")
+
+    @property
+    def read_only(self):
+        """
+        Boolean indicating whether the key store is read-only or not
+        """
+        return self._read_only
+
+    @property
+    def file(self):
+        """
+        Path of the file used as backend
+        """
+        return self._file

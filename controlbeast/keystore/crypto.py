@@ -8,7 +8,7 @@
 """
 import os
 import shlex
-
+from controlbeast.keystore.exception import CbKsIOError
 from controlbeast.utils.binary import CbBinary
 from controlbeast.utils.convert import to_bytes, to_str
 
@@ -49,9 +49,13 @@ class CbKsCrypto(CbBinary):
     #: Buffer containing the (unencrypted) message
     _plaintext = b''
 
+    #: Flag signalising whether this backend is read-only or not
+    _read_only = True
+
     def __init__(self, file='', passphrase=''):
         if file:
             self._file = os.path.abspath(file)
+            self._test_file()
         if passphrase:
             self._passphrase = to_bytes(passphrase)
         self._arguments = []
@@ -74,7 +78,7 @@ class CbKsCrypto(CbBinary):
         """
         Execute encryption into file
         """
-        if self._check_access(os.path.dirname(self._file), os.W_OK):
+        if not self._read_only:
             # Make sure stdin data contains plaintext to be encrypted
             self._stdin = self._plaintext
             self._operate(action='e')
@@ -117,6 +121,20 @@ class CbKsCrypto(CbBinary):
         if self._ciphersuite != "none":
             os.close(fd_pass_r)
 
+    def _test_file(self):
+        """
+        Check permissions for file selected for backend
+        """
+        if os.path.isfile(self._file):
+            if not self._check_access(self._file, os.R_OK):
+                raise CbKsIOError(filename=self._file)
+            if self._check_access(self._file, os.W_OK):
+                self._read_only = False
+        else:
+            if not self._check_access(os.path.dirname(self._file), os.W_OK):
+                raise CbKsIOError(filename=self._file)
+            self._read_only = False
+
     @property
     def plaintext(self):
         """
@@ -129,5 +147,15 @@ class CbKsCrypto(CbBinary):
 
     @plaintext.setter
     def plaintext(self, value):
-        self._plaintext = to_bytes(value)
-        self._encrypt()
+        if not self._read_only:
+            self._plaintext = to_bytes(value)
+            self._encrypt()
+        else:
+            raise TypeError("This key store backend is read-only.")
+
+    @property
+    def read_only(self):
+        """
+        Boolean indicating whether this backend is read-only or not
+        """
+        return self._read_only
