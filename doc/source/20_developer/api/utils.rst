@@ -9,6 +9,11 @@ ControlBeast Utilities
    :members:
    :private-members:
 
+   .. autoattribute:: _binary_name
+   .. autoattribute:: _binary_path
+   .. autoattribute:: _arguments
+   .. autoattribute:: _timeout
+
 .. currentmodule:: controlbeast.utils.convert
 
 .. automodule:: controlbeast.utils.convert
@@ -22,6 +27,9 @@ ControlBeast Utilities
 .. automodule:: controlbeast.utils.dynamic
 
 .. autoclass:: controlbeast.utils.dynamic.CbDynamic
+   :members:
+   :private-members:
+   :special-members:
 
 .. currentmodule:: controlbeast.utils.loader
 
@@ -37,6 +45,8 @@ ControlBeast Utilities
 
 .. autoclass:: CbSingleton
    :members:
+   :private-members:
+   :special-members:
 
 .. currentmodule:: controlbeast.utils.version
 

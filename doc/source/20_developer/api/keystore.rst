@@ -7,6 +7,7 @@ ControlBeast Key Store Interface
    :show-inheritance:
    :members:
    :private-members:
+   :special-members:
 
 
 The File Backend Interfaces

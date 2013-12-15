@@ -6,7 +6,6 @@
     :copyright: Copyright 2013 by the ControlBeast team, see AUTHORS.
     :license: ISC, see LICENSE for details.
 """
-import os
 import subprocess
 from controlbeast.utils.binary import CbBinary
 from controlbeast.utils.dynamic import CbDynamic
@@ -72,7 +71,7 @@ class CbSCMWrapper(CbBinary):
     def __init__(self, binary_name=''):
         super(CbSCMWrapper, self).__init__(binary_name=binary_name)
         if not self._binary_path:
-            raise CbSCMBinaryError(self._scm_binary_name)
+            raise CbSCMBinaryError(self._binary_name)
         self._arguments = []
 
     def _run(self, arguments, path, exception):
@@ -80,7 +79,7 @@ class CbSCMWrapper(CbBinary):
         Run the command described by arguments and catch eventual exceptions.
 
         :param list arguments: list of arguments as expected by the various :py:mod:`subprocess` functions, excluding
-                               the path to the binary (cf. :py:class`~controlbeast.utils.binary.CbBinary`)
+                               the path to the binary (cf. :py:class:`~controlbeast.utils.binary.CbBinary`)
         :param str path:       file system path representing the location of the SCM repository
         :param exception:      reference to the exception class to be raised if anything goes wrong
         """
@@ -88,9 +87,9 @@ class CbSCMWrapper(CbBinary):
         try:
             self._execute()
         except subprocess.CalledProcessError:
-            raise exception(scm_name=self._scm_binary_name, path=path, text=self.stderr)
+            raise exception(scm_name=self._binary_name, path=path, text=self.stderr)
         except (OSError, FileNotFoundError):
-            raise CbSCMBinaryError(scm_name=self._scm_binary_name)
+            raise CbSCMBinaryError(scm_name=self._binary_name)
 
     def init(self, *args, **kwargs):
         """
