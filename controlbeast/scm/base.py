@@ -8,6 +8,7 @@
 """
 import os
 import subprocess
+from controlbeast.utils.binary import CbBinary
 from controlbeast.utils.dynamic import CbDynamic
 
 
@@ -63,61 +64,33 @@ class CbSCMCommitError(CbSCMError):
             return "Commit to {path} failed for unknown reason.".format(path=self._path)
 
 
-class CbSCMWrapper(object):
+class CbSCMWrapper(CbBinary):
     """
     The class from which all SCM interface wrappers derive
     """
 
-    _scm_binary_name = None
-    _scm_binary_path = None
+    def __init__(self, binary_name=''):
+        super(CbSCMWrapper, self).__init__(binary_name=binary_name)
+        if not self._binary_path:
+            raise CbSCMBinaryError(self._scm_binary_name)
+        self._arguments = []
 
-    def __init__(self):
-        """
-        The CbSCMWrapper constructor
-        """
-        self.detect_binary()
-
-    def _execute(self, arguments, path, exception):
+    def _run(self, arguments, path, exception):
         """
         Run the command described by arguments and catch eventual exceptions.
 
-        :param list arguments: list of arguments as expected by the various :py:mod:`subprocess` functions
+        :param list arguments: list of arguments as expected by the various :py:mod:`subprocess` functions, excluding
+                               the path to the binary (cf. :py:class`~controlbeast.utils.binary.CbBinary`)
+        :param str path:       file system path representing the location of the SCM repository
         :param exception:      reference to the exception class to be raised if anything goes wrong
         """
-        #noinspection PyUnusedLocal
-        err = out = ""
-        process = subprocess.Popen(arguments, stderr=subprocess.PIPE, stdout=subprocess.PIPE)
+        self._arguments = arguments
         try:
-            out, err = process.communicate()
+            self._execute()
         except subprocess.CalledProcessError:
-            raise exception(scm_name=self._scm_binary_name, path=path, text=err.decode(errors='replace'))
+            raise exception(scm_name=self._scm_binary_name, path=path, text=self.stderr)
         except (OSError, FileNotFoundError):
             raise CbSCMBinaryError(scm_name=self._scm_binary_name)
-        # Popen.communicate usually does not raise an exception, so we have to catch this manually:
-        if err:
-            raise exception(scm_name=self._scm_binary_name, path=path, text=err.decode(errors='replace'))
-        return out, err
-
-    def detect_binary(self):
-        """
-        Look for the scm binary and store its path in _scm_binary_path
-        """
-        # only act if _scm_binary_name has been defined
-        if self._scm_binary_name:
-            for path in os.get_exec_path():
-                binary = os.path.join(path, self._scm_binary_name)
-                # perform test on effective [g,u]uid on platforms supporting this in order to
-                # grant respecting an eventually set SUID bit
-                if os.access in os.supports_effective_ids:
-                    status = os.access(binary, os.X_OK, effective_ids=True)
-                else:
-                    status = os.access(binary, os.X_OK, effective_ids=False)
-
-                if status:
-                    self._scm_binary_path = binary
-                    break
-        if not self._scm_binary_path:
-            raise CbSCMBinaryError(self._scm_binary_name)
 
     def init(self, *args, **kwargs):
         """

@@ -7,7 +7,6 @@
     :license: ISC, see LICENSE for details.
 """
 import os
-
 from controlbeast.scm.base import CbSCMWrapper, CbSCMInitError, CbSCMCommitError
 
 
@@ -16,14 +15,16 @@ class Git(CbSCMWrapper):
     Class acting as wrapper for the git command line interface
     """
 
-    _scm_binary_name = 'git'
+    def __init__(self):
+        super(Git, self).__init__(binary_name='git')
+        self._arguments = []
 
     def init(self, *args, **kwargs):
         """
         Initialise a git repository.
 
-        :param str path: Path on the file system where the repository should reside. If not specified, it defaults to the
-                         current work directory.
+        :param str path: Path on the file system where the repository should reside. If not specified, it defaults to
+                         the current work directory.
         """
         path = None
 
@@ -36,7 +37,9 @@ class Git(CbSCMWrapper):
         if not path:
             path = os.path.abspath(os.getcwd())
 
-        self._execute([self._scm_binary_path, 'init', path], path, CbSCMInitError)
+        self._run(['init', path], path, CbSCMInitError)
+        if self.return_code != os.EX_OK:
+            raise CbSCMInitError(scm_name=self._binary_name, path=path, text=self.stderr)
 
     def commit(self, *args, **kwargs):
         """
@@ -70,8 +73,12 @@ class Git(CbSCMWrapper):
         os.chdir(path)
 
         # Before committing to git, changes have to be staged for the commit process
-        self._execute([self._scm_binary_path, 'add', '.'], path, CbSCMCommitError)
-        self._execute([self._scm_binary_path, 'commit', '-a', '-m', message], path, CbSCMCommitError)
+        self._run(['add', '.'], path, CbSCMCommitError)
+        if self.return_code != os.EX_OK:
+            raise CbSCMCommitError(scm_name=self._binary_name, path=path, text=self.stderr)
+        self._run(['commit', '-a', '-m', message], path, CbSCMCommitError)
+        if self.return_code != os.EX_OK:
+            raise CbSCMCommitError(scm_name=self._binary_name, path=path, text=self.stderr)
 
         # Switch back to the previous working directory
         os.chdir(current_dir)
