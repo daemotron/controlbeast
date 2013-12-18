@@ -1,6 +1,10 @@
 ControlBeast
 ============
 
+.. image:: https://secure.travis-ci.org/daemotron/controlbeast.png?branch=master
+   :target: http://travis-ci.org/daemotron/controlbeast
+   :alt: Travis-ci: continuous integration status.
+
 ControlBeast is a command line based software helping FreeBSD_ system administrators with automatizing 
 repetitive tasks and managing all information related to a server's configuration in one place. ControlBeast 
 has been developed with security in mind, but also following the KISS_ principle – unnecessary complexity has
