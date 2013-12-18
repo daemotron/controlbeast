@@ -1,3 +1,11 @@
 language: python
 python:
   - "3.3"
+before_install:
+  - sudo apt-get update -qq
+  - sudo apt-get install -qq --no-install-recommends libssh
+  - sudo apt-get install -qq --no-install-recommends openssl
+  - sudo apt-get install -qq --no-install-recommends git
+install:
+  - pip install PyYAML>=3.10
+script: scripts/ut.py
