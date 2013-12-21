@@ -80,6 +80,7 @@ class CbKeyStore(UserDict):
             try:
                 data = yaml.safe_load(self._backend.plaintext)
             except yaml.YAMLError:
+                self._read_only = True
                 data = {}
         else:
             data = {}
@@ -139,6 +140,11 @@ class CbKeyStore(UserDict):
         Boolean indicating whether the key store is read-only or not
         """
         return self._read_only
+
+    @read_only.setter
+    def read_only(self, value):
+        if value:
+            self._read_only = True
 
     @property
     def file(self):

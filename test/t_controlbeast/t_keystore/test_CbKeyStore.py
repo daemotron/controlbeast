@@ -32,6 +32,10 @@ class TestCbKeyStore(TestCase):
     08         CbKsPlain   False           True         True             N/A               False         create
     09         CbKsCrypto  True            False        True             True              True          create
     10         CbKsCrypto  True            False        True             False             True          create
+    11         CbKsPlain   False           True         True             N/A               Broken        create
+    12         CbKsPlain   True            N/A          N/A              N/A               True          write
+    13         CbKsPlain   True            N/A          N/A              N/A               True          delete
+    14         CbKsPlain   True            N/A          N/A              N/A               True          sync
     =========  ==========  ==============  ===========  ===============  ================  ============  =========
     """
 
@@ -187,3 +191,62 @@ class TestCbKeyStore(TestCase):
             obj_2 = CbKeyStore(file=obj_1.file, passphrase='sacred')
         # Clean up
         del obj_1
+
+    def test_11(self):
+        """
+        Test Case 11:
+        Create a key store with plaintext backend on an existing file with invalid content.
+
+        The test is passed if the key store object is empty and read-only in order to preventing
+        some file content being destroyed by mistakenly using it as a key store backend file.
+        """
+        fp, name = tempfile.mkstemp()
+        os.write(fp, b'-\n-e')
+        os.close(fp)
+        obj = CbKeyStore(file=name)
+        self.assertDictEqual(dict(obj), {})
+        self.assertTrue(obj.read_only)
+        os.unlink(name)
+
+    def test_12(self):
+        """
+        Test Case 12:
+        Try writing to a read-only key store.
+
+        The test is passed if :py:exc:`TypeError` is raised.
+        """
+        comp = {'test': 'success'}
+        obj = CbKeyStore(dict=comp)
+        obj.read_only = True
+        with self.assertRaises(TypeError):
+            obj['foo'] = 'bar'
+        del obj
+
+    def test_13(self):
+        """
+        Test Case 13:
+        Try deleting from a read-only key store.
+
+        The test is passed if :py:exc:`TypeError` is raised.
+        """
+        comp = {'test': 'success'}
+        obj = CbKeyStore(dict=comp)
+        obj.read_only = True
+        with self.assertRaises(TypeError):
+            del obj['test']
+        del obj
+
+    def test_14(self):
+        """
+        Test Case 14:
+        Try force-syncing a read-only key store.
+
+        The test is passed if :py:exc:`TypeError` is raised.
+        """
+        comp = {'test': 'success'}
+        obj = CbKeyStore(dict=comp)
+        obj.read_only = True
+        with self.assertRaises(TypeError):
+            # noinspection PyProtectedMember
+            obj._sync()
+        del obj
