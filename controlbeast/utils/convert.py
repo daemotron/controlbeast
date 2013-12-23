@@ -16,7 +16,8 @@ def to_bytes(value):
     :return: Byte sequence
     """
     if isinstance(value, str):
-        return bytes(value, 'utf-8', 'replace')
+        # noinspection PyArgumentList
+        return bytes(source=value, encoding='utf-8', errors='replace')
     elif isinstance(value, bytearray):
         return bytes(value)
     elif isinstance(value, bytes):
@@ -24,7 +25,8 @@ def to_bytes(value):
     elif value is None:
         return b''
     else:
-        return bytes(str(value), 'utf-8', 'replace')
+        # noinspection PyArgumentList
+        return bytes(source=str(value), encoding='utf-8', errors='replace')
 
 
 def to_str(value):
@@ -35,7 +37,7 @@ def to_str(value):
     :return: Resulting string
     """
     if isinstance(value, bytes) or isinstance(value, bytearray):
-        return value.decode('utf-8', 'replace')
+        return value.decode(encoding='utf-8', errors='replace')
     elif value is None:
         return ''
     else:
