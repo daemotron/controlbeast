@@ -22,7 +22,7 @@ def to_bytes(value):
         return bytes(value)
     elif isinstance(value, bytes):
         return value
-    elif value is None:
+    elif not value:
         return b''
     else:
         # noinspection PyArgumentList
