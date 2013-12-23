@@ -7,7 +7,6 @@
     :license: ISC, see LICENSE for details.
 """
 import os
-
 import controlbeast.cli.base
 from controlbeast.scm import scm_commit, CbSCMBinaryError, CbSCMCommitError
 
@@ -50,8 +49,6 @@ class CommitCommand(controlbeast.cli.base.CbCommand):
         try:
             scm_commit(path=path, message=message)
         except CbSCMBinaryError as bin_err:
-            print(bin_err)
-            self._status = os.EX_OSFILE
+            return self._terminate(bin_err, os.EX_OSFILE)
         except CbSCMCommitError as ini_err:
-            print(ini_err)
-            self._status = os.EX_IOERR
+            return self._terminate(ini_err, os.EX_IOERR)

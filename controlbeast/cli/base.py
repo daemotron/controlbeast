@@ -10,6 +10,7 @@
 
 import argparse
 import os
+import sys
 
 
 class CbCommand(object):
@@ -42,6 +43,16 @@ class CbCommand(object):
         self._status = 0
         self._command = command
         self._executable = os.path.basename(executable)
+
+    def _terminate(self, message, status):
+        """
+        Print message to stderr and set exit status.
+
+        :param message: string or any printable object
+        :param status:  exit status to be set for the object
+        """
+        self._status = status
+        print(message, file=sys.stderr)
 
     def usage(self):
         """
