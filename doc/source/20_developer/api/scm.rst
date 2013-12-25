@@ -14,6 +14,7 @@ General SCM Interface
    :members:
    :private-members:
 
+
 Function-oriented Interface
 ---------------------------
 
@@ -21,27 +22,34 @@ Function-oriented Interface
 
 .. autofunction:: scm_commit
 
+.. autofunction:: scm_get_root
+
 
 Exceptions
 ----------
 
 .. currentmodule:: controlbeast.scm.base
 
-.. autoclass:: CbSCMError
+.. autoexception:: CbSCMError
    :members:
    :private-members:
 
-.. autoclass:: CbSCMBinaryError
+.. autoexception:: CbSCMBinaryError
    :members:
    :private-members:
 
-.. autoclass:: CbSCMInitError
+.. autoexception:: CbSCMInitError
    :members:
    :private-members:
 
-.. autoclass:: CbSCMCommitError
+.. autoexception:: CbSCMCommitError
    :members:
    :private-members:
+
+.. autoexception:: CbSCMRepoError
+   :members:
+   :private-members:
+
 
 Git SCM Interface
 -----------------

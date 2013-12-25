@@ -63,6 +63,19 @@ class CbSCMCommitError(CbSCMError):
             return "Commit to {path} failed for unknown reason.".format(path=self._path)
 
 
+class CbSCMRepoError(CbSCMError):
+    """
+    SCM Repository Error
+
+    This exception is raised when the repository is not valid, damaged or does not exist.
+    """
+    def __str__(self):
+        if self._text:
+            return "Repository at {path} is not valid:\n{text}".format(path=self._path, text=self._text)
+        else:
+            return "Repository at {path} is not valid.".format(path=self._path)
+
+
 class CbSCMWrapper(CbBinary):
     """
     The class from which all SCM interface wrappers derive
@@ -102,5 +115,11 @@ class CbSCMWrapper(CbBinary):
         """
         The commit method contains the actual code for committing updated content into
         the repository. This method needs to be implemented for each SCM wrapper class
+        """
+        raise NotImplementedError
+
+    def get_root(self, *args, **kwargs):
+        """
+        Get the path to the root of the SCM repository
         """
         raise NotImplementedError

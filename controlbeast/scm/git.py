@@ -7,7 +7,7 @@
     :license: ISC, see LICENSE for details.
 """
 import os
-from controlbeast.scm.base import CbSCMWrapper, CbSCMInitError, CbSCMCommitError
+from controlbeast.scm.base import CbSCMWrapper, CbSCMInitError, CbSCMCommitError, CbSCMRepoError
 
 
 class Git(CbSCMWrapper):
@@ -82,3 +82,33 @@ class Git(CbSCMWrapper):
 
         # Switch back to the previous working directory
         os.chdir(current_dir)
+
+    def get_root(self, *args, **kwargs):
+        """
+        Get the path to the root of a git repository.
+
+        :param str path: Path on the file system where to start looking for the repository's root directory
+        """
+        path = None
+
+        if len(args) > 0:
+            path = args[0]
+
+        if 'path' in kwargs:
+            path = kwargs['path']
+
+        if not path:
+            path = os.path.abspath(os.getcwd())
+
+        # Git can only commit in the current work directory, so we have to change the current working
+        # directory to the path of the repository we are expected to execute the commit on.
+        current_dir = os.path.abspath(os.getcwd())
+        os.chdir(path)
+
+        self._run(['rev-parse', '--show-toplevel'], path, CbSCMRepoError)
+        if self.return_code != os.EX_OK:
+            raise CbSCMRepoError(scm_name=self._binary_name, path=path, text=self.stderr)
+
+        # Switch back to the previous working directory
+        os.chdir(current_dir)
+        return self.stdout.strip()
