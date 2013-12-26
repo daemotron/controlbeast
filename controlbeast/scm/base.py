@@ -47,7 +47,7 @@ class CbSCMInitError(CbSCMError):
         if self._text:
             return "Initialisation of {path} failed:\n{text}".format(path=self._path, text=self._text)
         else:
-            return "Initialisation of {path} failed for unknown reason".format(path=self._path)
+            return "Initialisation of {path} failed for unknown reason.".format(path=self._path)
 
 
 class CbSCMCommitError(CbSCMError):

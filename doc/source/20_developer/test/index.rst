@@ -5,3 +5,4 @@ ControlBeast Test Documentation
    :maxdepth: 2
 
    keystore
+   scm
