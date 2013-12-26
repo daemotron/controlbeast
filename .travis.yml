@@ -6,6 +6,8 @@ before_install:
   - sudo apt-get install -qq --no-install-recommends libssh-4
   - sudo apt-get install -qq --no-install-recommends openssl
   - sudo apt-get install -qq --no-install-recommends git
+  - git config --global user.email "test@example.com"
+  - git config --global user.name "Git Test"
 install:
   - pip install PyYAML>=3.10
 script: scripts/ut.py
