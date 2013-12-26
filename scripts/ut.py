@@ -79,11 +79,17 @@ def main():
                     except TypeError:
                         pass
 
+    return_code = os.EX_OK
+
     # Create a unittest runner and run all detected tests
     runner = unittest.TextTestRunner()
     for test_class in test_classes:
         suite = unittest.defaultTestLoader.loadTestsFromTestCase(test_class)
-        runner.run(suite)
+        result = runner.run(suite)
+        if result.failures:
+            return_code = os.EX_SOFTWARE
+
+    return return_code
 
 
 if __name__ == '__main__':
