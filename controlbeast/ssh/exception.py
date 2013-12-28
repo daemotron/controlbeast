@@ -39,7 +39,7 @@ class CbSSHLibraryError(CbSSHError):
     """
     def __str__(self):
         if self._library:
-            return "{library} is not available or incompatible on your computer".format(library=self._library)
+            return "{library} is not available or incompatible on your computer.".format(library=self._library)
         else:
             return "libssh is not available or incompatible on your computer."
 
@@ -83,6 +83,7 @@ class CbSSHCommunicationError(CbSSHError):
             hostname=self._hostname,
             code=self._return_code
         )
+
 
 class CbSSHExecutionError(CbSSHError):
     """
