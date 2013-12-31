@@ -1,9 +1,9 @@
 ControlBeast Base Test
 ======================
 
-.. currentmodule:: test.t_controlbeast.test_CB
+.. currentmodule:: test.t_controlbeast.test_CbBase
 
-.. autoclass:: TestCB
+.. autoclass:: TestCbBase
    :show-inheritance:
    :members:
    :private-members:

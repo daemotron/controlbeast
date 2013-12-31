@@ -8,3 +8,4 @@ ControlBeast Test Documentation
    keystore
    scm
    ssh
+   script

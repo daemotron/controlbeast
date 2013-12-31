@@ -11,7 +11,7 @@ import os
 from unittest import TestCase
 
 
-class TestCb(TestCase):
+class TestScript(TestCase):
     """
     Unit tests for ``scripts/cb.py``
     """

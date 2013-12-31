@@ -6,11 +6,12 @@
     :copyright: Copyright 2013 by the ControlBeast team, see AUTHORS.
     :license: ISC, see LICENSE for details.
 """
+import os
 from unittest import TestCase
 from controlbeast import get_conf, get_version
 
 
-class TestCB(TestCase):
+class TestCbBase(TestCase):
     """
     Class providing unit tests for the ControlBeast module
 
@@ -21,7 +22,8 @@ class TestCB(TestCase):
     ==============  ========================================================================================
     01              Get a scalar configuration value with a level one key.
     02              Get a dictionary configuration value with a level three key.
-    03              Get the ControlBeast version information.
+    03              Get a location value from global configuration.
+    04              Get the ControlBeast version information.
     ==============  ========================================================================================
     """
 
@@ -46,6 +48,18 @@ class TestCB(TestCase):
     def test_03(self):
         """
         Test Case 03:
+        Get a location value from global configuration.
+
+        Test is passed if returned configuration value corresponds to expected string.
+        """
+        self.assertEqual(
+            os.path.join(get_conf(get_conf('keystore.repo.location')), get_conf('keystore.repo.name')),
+            get_conf('keystore.repo')
+        )
+
+    def test_04(self):
+        """
+        Test Case 04:
         Get the ControlBeast version information.
 
         Test is passed if returned version information is a string.
