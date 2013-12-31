@@ -81,14 +81,47 @@ def main():
 
     return_code = os.EX_OK
 
+    results = {}
+
     # Create a unittest runner and run all detected tests
-    runner = unittest.TextTestRunner()
+    runner = unittest.TextTestRunner(stream=open('/dev/null', 'w'))
     for test_class in test_classes:
         suite = unittest.defaultTestLoader.loadTestsFromTestCase(test_class)
         result = runner.run(suite)
+        results[test_class.__name__] = (len(result.failures), result.testsRun)
         if result.failures:
             return_code = os.EX_SOFTWARE
 
+    total_tests = 0
+    total_passed = 0
+    total_failed = 0
+
+    print("\nControlBeast Unit Test Result Summary:\n")
+    print("Test                   Passed   Failed    Total    % passed")
+    print("===========================================================")
+    for key in results:
+        total_tests += results[key][1]
+        total_failed += results[key][0]
+        total_passed = total_tests - total_failed
+        print("{test: <20}      {passed: >3d}      {failed: >3d}      {total: >3d}     {ratio: >3.2%}".format(
+            test=key,
+            passed=results[key][1]-results[key][0],
+            failed=results[key][0],
+            total=results[key][1],
+            ratio=(results[key][1]-results[key][0])/results[key][1]
+        ))
+    print("===========================================================")
+    print("{test: <20}      {passed: >3d}      {failed: >3d}      {total: >3d}     {ratio: >3.2%}\n".format(
+        test="TOTAL",
+        passed=total_passed,
+        failed=total_failed,
+        total=total_tests,
+        ratio=total_passed/total_tests
+    ))
+    if total_passed < total_tests:
+        print("Overall Test Result: FAILED.\n")
+    else:
+        print("Overall Test Result: PASSED.\n")
     return return_code
 
 
