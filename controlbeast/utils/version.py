@@ -6,7 +6,7 @@
     :copyright: Copyright 2013 by the ControlBeast team, see AUTHORS.
     :license: ISC, see LICENSE for details.
 """
-
+from controlbeast.utils.convert import to_str
 import controlbeast
 import os.path
 import subprocess
@@ -21,6 +21,7 @@ def get_version(*args, **kwargs):
         version = args[0]
     else:
         from controlbeast import VERSION
+
         version = VERSION
 
     assert len(version) == 5
@@ -100,13 +101,17 @@ def get_git_changeset(path=None):
     if path is None:
         path = os.path.normpath(os.path.join(controlbeast.__path__[0], ".."))
 
-    # run `git show` in controlbeast's root directory and grab its output from stdout
+    # run `git show` in ControlBeast's root directory and grab its output from stdout
     try:
-        with subprocess.Popen('git show --pretty=format:%ct --quiet HEAD',
-                              stdout=subprocess.PIPE, stderr=subprocess.PIPE,
-                              shell=True, cwd=path, universal_newlines=True
+        with subprocess.Popen(
+            'git show --pretty=format:%ct --quiet HEAD',
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+            shell=True,
+            cwd=path,
+            universal_newlines=True
         ) as git_show:
-            timestamp = git_show.communicate()[0].partition('\n')[0]
+            timestamp = to_str(git_show.communicate()[0]).partition('\n')[0]
     except OSError:
         timestamp = None
 
