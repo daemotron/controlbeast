@@ -1,7 +1,7 @@
 ControlBeast Script Test
 ========================
 
-.. currentmodule:: test.t_script.test_script
+.. currentmodule:: test.t_scripts.test_script
 
 .. autoclass:: TestScript
    :show-inheritance:
