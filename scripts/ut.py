@@ -99,7 +99,7 @@ def main():
     print("\nControlBeast Unit Test Result Summary:\n")
     print("Test                   Passed   Failed    Total    % passed")
     print("===========================================================")
-    for key in results:
+    for key in sorted(results):
         total_tests += results[key][1]
         total_failed += results[key][0]
         total_passed = total_tests - total_failed
