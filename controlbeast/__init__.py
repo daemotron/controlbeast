@@ -30,6 +30,12 @@ DEFAULTS = {
                 'custom': os.path.join('conf', 'custom')
             }
         }
+    },
+    'keystore': {
+        'repo': {
+            'name': 'keystore.sec',
+            'location': 'dir.repo.conf'
+        }
     }
 }
 
@@ -49,6 +55,9 @@ def get_conf(key):
         else:
             directory = None
             break
+
+    if 'name' in directory and 'location' in directory:
+        return os.path.join(get_conf(directory['location']), directory['name'])
 
     return directory
 
