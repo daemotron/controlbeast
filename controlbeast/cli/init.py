@@ -6,9 +6,12 @@
     :copyright: Copyright 2013 by the ControlBeast team, see AUTHORS.
     :license: ISC, see LICENSE for details.
 """
+import getpass
 import os
+from controlbeast import get_conf, get_version
 import controlbeast.cli.base
-from controlbeast.scm import scm_init, CbSCMBinaryError, CbSCMInitError
+from controlbeast.keystore import CbKeyStore
+from controlbeast.scm import scm_init, CbSCMBinaryError, CbSCMInitError, scm_commit, CbSCMCommitError
 
 
 class InitCommand(controlbeast.cli.base.CbCommand):
@@ -35,9 +38,53 @@ class InitCommand(controlbeast.cli.base.CbCommand):
 
         self._status = os.EX_OK
 
+        # initialise an empty repository
         try:
             scm_init(path)
         except CbSCMBinaryError as bin_err:
             return self._terminate(bin_err, os.EX_OSFILE)
         except CbSCMInitError as ini_err:
+            return self._terminate(ini_err, os.EX_IOERR)
+
+        print('''
+Your newly created ControlBeast repository will probably contain some sensitive
+information (such as identification tokens, passwords etc.) that are best kept
+secret. You may now enter a password which will be used to encrypt this kind of
+information.
+
+WARNING: leaving the password empty will entail unencrypted storage of
+         potentially sensitive information!
+''')
+
+        # Try getting a password. If nothing is entered or verification fails three times,
+        # do not enable encryption for the key store.
+        password = ''
+        verify = ''
+        password = getpass.getpass()
+        count = 0
+        if password:
+            while verify != password:
+                verify = getpass.getpass(prompt='Verify password: ')
+                count += 1
+                if count >= 3:
+                    print('Unable to verify password, will continue with encryption turned off.')
+                    break
+
+        # create basic directory structure
+        os.makedirs(os.path.join(path, get_conf('dir.repo.conf')))
+        os.makedirs(os.path.join(path, get_conf('dir.repo.hosts')))
+        os.makedirs(os.path.join(path, get_conf('dir.repo.recipes.python')))
+        os.makedirs(os.path.join(path, get_conf('dir.repo.recipes.yaml')))
+
+        # Set up key store and fill in some useless information
+        ks = CbKeyStore(file=os.path.join(path, get_conf('keystore.repo')), passphrase=password)
+        ks['version'] = get_version()
+        ks['created by'] = getpass.getuser()
+
+        # commit the changes
+        try:
+            scm_commit(path=path, message="Repository initialisation")
+        except CbSCMBinaryError as bin_err:
+            return self._terminate(bin_err, os.EX_OSFILE)
+        except CbSCMCommitError as ini_err:
             return self._terminate(ini_err, os.EX_IOERR)
