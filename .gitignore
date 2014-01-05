@@ -4,5 +4,7 @@
 *.txt.user
 *.py[co]
 *~
+MANIFEST
 build/
+dist/
 .idea/

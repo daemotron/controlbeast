@@ -64,7 +64,7 @@ def main():
     # look recursively for Python modules in ``test_dir`` and find all classes within those
     # modules derived from :py:class:`~unittest.TestCase`
     for root, dirs, files in os.walk(test_dir):
-        module_prefix = '.'.join(os.path.relpath(root, os.path.dirname(test_dir)).split('/'))
+        module_prefix = '.'.join(str(os.path.relpath(root, os.path.dirname(test_dir))).split(os.path.sep))
         for module in filter(__filter_files, files):
             try:
                 candidate = importlib.import_module('.'.join((module_prefix, os.path.splitext(module)[0])))
