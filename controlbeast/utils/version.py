@@ -20,9 +20,7 @@ def get_version(*args, **kwargs):
     elif args:
         version = args[0]
     else:
-        from controlbeast import VERSION
-
-        version = VERSION
+        version = controlbeast.VERSION
 
     assert len(version) == 5
     assert version[3] in ('alpha', 'beta', 'rc', 'final')
@@ -48,6 +46,47 @@ def get_version(*args, **kwargs):
         sub = mapping[version[3]] + str(version[4])
 
     return main + sub
+
+
+def get_development_status(*args, **kwargs):
+    """
+    Derive the development status compliant to `PEP301 Trove Classifiers`_ from VERSION.
+
+    .. _PEP301 Trove Classifiers: http://www.python.org/dev/peps/pep-0301/#distutils-trove-classification
+
+    :param tuple version: The version tuple to be used
+    :return: Trove classifier string
+    """
+    classifiers = {
+        1: 'Planning',
+        2: 'Pre-Alpha',
+        3: 'Alpha',
+        4: 'Beta',
+        5: 'Production/Stable',
+        6: 'Mature',
+        7: 'Inactive'
+    }
+    template = 'Development Status :: {number} - {Status}'
+    if 'version' in kwargs:
+        version = kwargs['version']
+    elif args:
+        version = args[0]
+    else:
+        version = controlbeast.VERSION
+    assert len(version) == 5
+    assert version[3] in ('alpha', 'beta', 'rc', 'final')
+
+    agent = 1
+    if version[3] == 'alpha' and version[4] == 0:
+        agent = 2
+    elif version[3] == 'alpha' and version[4] > 0:
+        agent = 3
+    elif version[3] in ('beta', 'rc'):
+        agent = 4
+    elif version[3] == 'final':
+        agent = 5
+
+    return template.format(number=agent, Status=classifiers[agent])
 
 
 def get_git_revision(path=None):

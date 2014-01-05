@@ -52,6 +52,8 @@ ControlBeast Utilities
 
 .. automodule:: controlbeast.utils.version
 
+.. autofunction:: get_development_status
+
 .. autofunction:: get_git_changeset
 
 .. autofunction:: get_git_revision
