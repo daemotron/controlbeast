@@ -3,13 +3,13 @@
     controlbeast
     ~~~~~~~~~~~~
 
-    :copyright: Copyright 2013 by the ControlBeast team, see AUTHORS.
+    :copyright: Copyright 2013, 2014 by the ControlBeast team, see AUTHORS.
     :license: ISC, see LICENSE for details.
 """
 import os
 
 VERSION = (0, 1, 0, 'alpha', 0)
-COPYRIGHT = ('2013', 'the ControlBeast team')
+COPYRIGHT = ('2013, 2014', 'the ControlBeast team')
 
 DEFAULTS = {
     'scm': 'Git',
