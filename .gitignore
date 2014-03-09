@@ -4,6 +4,7 @@
 *.txt.user
 *.py[co]
 *~
+.DS_Store
 MANIFEST
 build/
 dist/
