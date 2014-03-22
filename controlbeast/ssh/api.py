@@ -3,7 +3,7 @@
     controlbeast.ssh.api
     ~~~~~~~~~~~~~~~~~~~~
 
-    :copyright: Copyright 2013 by the ControlBeast team, see AUTHORS.
+    :copyright: Copyright 2013, 2014 by the ControlBeast team, see AUTHORS.
     :license: ISC, see LICENSE for details.
 """
 
@@ -199,14 +199,40 @@ class CbSSHLib():
         else:
             return None
 
+    def ssh_channel_read_nonblocking(self, channel, chunk_size):
+        buffer = ctypes.create_string_buffer(chunk_size)
+        bytes_read = self._libssh.ssh_channel_read_nonblocking(channel, ctypes.byref(buffer), len(buffer), 0)
+        if bytes_read > 0:
+            return buffer.value
+        else:
+            return None
+
+    def ssh_channel_write(self, channel, data):
+        return self._libssh.ssh_channel_write(channel, data, len(data))
+
+    def ssh_channel_is_eof(self, channel):
+        return self._libssh.ssh_channel_is_eof(channel)
+
     def ssh_channel_send_eof(self, channel):
         self._libssh.ssh_channel_send_eof(channel)
+
+    def ssh_channel_is_open(self, channel):
+        return self._libssh.ssh_channel_is_open(channel)
 
     def ssh_channel_get_exit_status(self, channel):
         return self._libssh.ssh_channel_get_exit_status(channel)
 
+    def ssh_channel_close(self, channel):
+        self._libssh.ssh_channel_close(channel)
+
     def ssh_channel_free(self, channel):
         self._libssh.ssh_channel_free(channel)
+
+    def ssh_channel_request_pty(self, channel):
+        return self._libssh.ssh_channel_request_pty(channel)
+
+    def ssh_channel_request_shell(self, channel):
+        return self._libssh.ssh_channel_request_shell(channel)
 
     def get_error(self, session):
         return self._libssh.ssh_get_error(session)
