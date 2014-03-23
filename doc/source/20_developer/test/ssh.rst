@@ -43,3 +43,14 @@ Test Session
    :show-inheritance:
    :members:
    :private-members:
+
+
+Test Shell
+----------
+
+.. currentmodule:: test.t_controlbeast.t_ssh.test_CbSSHShell
+
+.. autoclass:: TestCbSSHShell
+   :show-inheritance:
+   :members:
+   :private-members:

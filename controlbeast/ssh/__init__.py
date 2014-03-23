@@ -7,6 +7,7 @@
     :license: ISC, see LICENSE for details.
 """
 from controlbeast.ssh.session import CbSSHSession
+from controlbeast.ssh.shell import CbSSHShell
 
 
 def connect(hostname='localhost', port='22', username='', password='', passphrase='', private_key_file=''):

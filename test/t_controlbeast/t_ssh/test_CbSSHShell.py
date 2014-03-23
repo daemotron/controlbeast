@@ -3,14 +3,14 @@
     test.t_controlbeast.t_ssh.test_CbSSHSession
     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-    :copyright: Copyright 2013 by the ControlBeast team, see AUTHORS.
+    :copyright: Copyright 2014 by the ControlBeast team, see AUTHORS.
     :license: ISC, see LICENSE for details.
 """
 from unittest import TestCase
-from controlbeast.ssh import CbSSHSession
+from controlbeast.ssh import CbSSHShell
 
 
-class TestCbSSHSession(TestCase):
+class TestCbSSHShell(TestCase):
     """
     Class providing unit tests for SSH Result classes.
 
@@ -19,12 +19,12 @@ class TestCbSSHSession(TestCase):
     ==============  ========================================================================================
     Test Case       Description
     ==============  ========================================================================================
-    01              Try instantiating a CbSSHSession object.
+    01              Try instantiating a CbSSHShell object.
     ==============  ========================================================================================
 
     .. note::
 
-       Testing of the other :py:class:`~controlbeast.ssh.session.CbSSHSession` functionality is not
+       Testing of the other :py:class:`~controlbeast.ssh.shell.CbSSHShell` functionality is not
        possible without creating an active SSH connection. This would however require a much more complex
        test environment. Therefore, all other SSH functionality has been tested manually.
     """
@@ -32,9 +32,9 @@ class TestCbSSHSession(TestCase):
     def test_01(self):
         """
         Test Case 01:
-        Try instantiating a CbSSHSession object.
+        Try instantiating a CbSSHShell object.
 
-        Test is passed if the object proves being a :py:class:`~controlbeast.ssh.session.CbSSHSession` instance.
+        Test is passed if the object proves being a :py:class:`~controlbeast.ssh.shell.CbSSHShell` instance.
         """
-        obj = CbSSHSession()
-        self.assertIsInstance(obj, CbSSHSession)
+        obj = CbSSHShell()
+        self.assertIsInstance(obj, CbSSHShell)
