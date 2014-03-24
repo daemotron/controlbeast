@@ -54,3 +54,14 @@ Test Shell
    :show-inheritance:
    :members:
    :private-members:
+
+
+Test Key Generator
+------------------
+
+.. currentmodule:: test.t_controlbeast.t_ssh.test_CbSSHKeygen
+
+.. autoclass:: TestCbSSHKeygen
+   :show-inheritance:
+   :members:
+   :private-members:

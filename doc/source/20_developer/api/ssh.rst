@@ -40,6 +40,15 @@ SSH Result Objects
    :members:
 
 
+SSH Key Generation
+------------------
+
+.. currentmodule:: controlbeast.ssh.keygen
+
+.. autoclass:: CbSSHKeygen
+   :members:
+
+
 Exceptions
 ----------
 

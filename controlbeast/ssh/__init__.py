@@ -8,6 +8,7 @@
 """
 from controlbeast.ssh.session import CbSSHSession
 from controlbeast.ssh.shell import CbSSHShell
+from controlbeast.ssh.keygen import CbSSHKeygen
 
 
 def connect(hostname='localhost', port='22', username='', password='', passphrase='', private_key_file=''):
