@@ -11,6 +11,7 @@ import shlex
 from controlbeast.keystore.exception import CbKsIOError
 from controlbeast.utils.binary import CbBinary
 from controlbeast.utils.convert import to_bytes, to_str
+from controlbeast.utils.compat import set_inheritable
 
 
 class CbKsCrypto(CbBinary):
@@ -108,6 +109,7 @@ class CbKsCrypto(CbBinary):
             # generate file descriptors for pipe needed for transporting the password to the openssl subprocess
             # write the password into our end end close our pipe's end file descriptor
             fd_pass_r, fd_pass_w = os.pipe()
+            set_inheritable(fd_pass_r, True)
             os.write(fd_pass_w, self._passphrase)
             os.close(fd_pass_w)
             self._arguments.extend(['-a', '-pass', 'fd:{}'.format(fd_pass_r)])

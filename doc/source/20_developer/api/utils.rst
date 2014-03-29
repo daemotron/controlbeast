@@ -14,6 +14,14 @@ ControlBeast Utilities
    .. autoattribute:: _arguments
    .. autoattribute:: _timeout
 
+.. currentmodule:: controlbeast.utils.compat
+
+.. automodule:: controlbeast.utils.compat
+
+.. autofunction:: controlbeast.utils.compat.set_inheritable
+
+   Wrapper for the ``set_inheritable`` function introduced with Python 3.4
+
 .. currentmodule:: controlbeast.utils.convert
 
 .. automodule:: controlbeast.utils.convert
