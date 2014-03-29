@@ -21,6 +21,7 @@ class CbSCMError(CbDynamic, Exception):
         self._path = ""
         self._text = ""
         self._scm_name = ""
+        self._branch = ""
         super().__init__(*args, **kwargs)
 
 
@@ -61,6 +62,46 @@ class CbSCMCommitError(CbSCMError):
             return "Commit to {path} failed:\n{text}".format(path=self._path, text=self._text)
         else:
             return "Commit to {path} failed for unknown reason.".format(path=self._path)
+
+
+class CbSCMBranchError(CbSCMError):
+    """
+    SCM Branch Error
+
+    This exception is raised when the creation of a branch failed.
+    """
+    def __str__(self):
+        if self._text:
+            return "Creation of branch {branch} within repository {path} failed:\n{text}".format(
+                branch=self._branch,
+                path=self._path,
+                text=self._text
+            )
+        else:
+            return "Creation of branch {branch} within repository {path} failed for unknown reason.".format(
+                branch=self._branch,
+                path=self._path
+            )
+
+
+class CbSCMCheckoutError(CbSCMError):
+    """
+    SCM Checkout Error
+
+    This exception is raised when the checkout of a branch failed.
+    """
+    def __str__(self):
+        if self._text:
+            return "Check out of branch {branch} within repository {path} failed:\n{text}".format(
+                branch=self._branch,
+                path=self._path,
+                text=self._text
+            )
+        else:
+            return "Check out of branch {branch} within repository {path} failed for unknown reason.".format(
+                branch=self._branch,
+                path=self._path
+            )
 
 
 class CbSCMRepoError(CbSCMError):
@@ -115,6 +156,38 @@ class CbSCMWrapper(CbBinary):
         """
         The commit method contains the actual code for committing updated content into
         the repository. This method needs to be implemented for each SCM wrapper class
+        """
+        raise NotImplementedError
+
+    def create_branch(self, *args, **kwargs):
+        """
+        The create_branch method contains the actual code for creating a named branch
+        within the repository. This method needs to be implemented for each SCM wrapper
+        class.
+        """
+        raise NotImplementedError
+
+    def checkout(self, *args, **kwargs):
+        """
+        The checkout method contains the actual code for checking out a named branch
+        from the repository. This method needs to be implemented for each SCM wrapper
+        class.
+        """
+        raise NotImplementedError
+
+    def get_branches(self, *args, **kwargs):
+        """
+        The get_branches method contains the actual code for retrieving a list of all
+        named branches that exist within the repository. This method needs to be implemented
+        for each SCM wrapper class.
+        """
+        raise NotImplementedError
+
+    def get_active_branch(self, *args, **kwargs):
+        """
+        The get_active_branch method contains the actual code for retrieving the currently
+        active branch of an existing repository. This method needs to be implemented for
+        each SCM wrapper class.
         """
         raise NotImplementedError
 

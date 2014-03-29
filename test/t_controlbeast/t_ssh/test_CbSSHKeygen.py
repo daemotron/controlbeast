@@ -53,3 +53,5 @@ class TestCbSSHKeygen(TestCase):
         self.assertEqual(obj.return_code, os.EX_OK)
         os.unlink(filename)
         os.unlink('.'.join((filename, 'pub')))
+
+    # TODO: Write unit tests covering other algorithms, and test CbSSHKeygen object properties

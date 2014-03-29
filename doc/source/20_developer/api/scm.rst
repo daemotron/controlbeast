@@ -22,6 +22,14 @@ Function-oriented Interface
 
 .. autofunction:: scm_commit
 
+.. autofunction:: scm_create_branch
+
+.. autofunction:: scm_get_branches
+
+.. autofunction:: scm_get_active_branch
+
+.. autofunction:: scm_checkout
+
 .. autofunction:: scm_get_root
 
 
@@ -43,6 +51,14 @@ Exceptions
    :private-members:
 
 .. autoexception:: CbSCMCommitError
+   :members:
+   :private-members:
+
+.. autoexception:: CbSCMBranchError
+   :members:
+   :private-members:
+
+.. autoexception:: CbSCMCheckoutError
    :members:
    :private-members:
 
