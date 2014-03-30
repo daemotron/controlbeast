@@ -38,14 +38,37 @@ class CbSSHKeygen(CbBinary):
        most probably enter FreeBSD 10.1).
     """
 
-    #: algorithm to be used for key generation
-    _algorithm = 'rsa'
-
     #: list of available algorithms
     _algorithms = ['rsa', 'dsa']
 
+    #: mapping of algorithms and key lengths
+    _key_map = {
+        'rsa': {
+            'default': 2048,
+            'range': [2 ** x for x in range(11, 15, 1)]
+        },
+        'dsa': {
+            'default': 1024,
+            'range': [1024]
+        },
+        'ecdsa': {
+            'default': 512,
+            'range': [256, 384, 512]
+        },
+        'ed25519': {
+            'default': 256,
+            'range': [256]
+        }
+    }
+
+    #: algorithm to be used for key generation
+    _algorithm = 'rsa'
+
     #: key length in bytes to be used for key generation
     _keylength = 8192
+
+    #: version of OpenSSH
+    _ssh_version = (0, 0)
 
     #: Major version of SSH
     _ssh_major = 0
@@ -57,6 +80,10 @@ class CbSSHKeygen(CbBinary):
         self._arguments = []
         super(CbSSHKeygen, self).__init__(binary_name='ssh-keygen')
         self._get_ssh_version()
+        if self._ssh_version >= (5, 7) and 'ecdsa' not in self._algorithms:
+            self._algorithms.append('ecdsa')
+        if self._ssh_version >= (6, 5) and 'ed25519' not in self._algorithms:
+            self._algorithms.append('ed25519')
 
     @property
     def algorithm(self):
@@ -70,19 +97,44 @@ class CbSSHKeygen(CbBinary):
     def algorithm(self, algorithm):
         if algorithm in self._algorithms:
             self._algorithm = algorithm
+        if self._keylength not in self._key_map[self._algorithm]['range']:
+            self._keylength = self._key_map[self._algorithm]['default']
+
+    @property
+    def algorithms(self):
+        """
+        List of valid algorithm names.
+        This list depends on the available OpenSSH version.
+        """
+        return self._algorithms
 
     @property
     def keylength(self):
         """
         Key length in bytes to be used for key generation.
-        Expected to be an integer within [2¹⁰, 2¹¹, 2¹² , 2¹³, 2¹⁴]
+        Expected to be an integer within the valid range for the selected algorithm
+        (for RSA e. g. [2¹¹, 2¹² , 2¹³, 2¹⁴], for DSA e. g. [2¹⁰]).
         """
         return self._keylength
 
     @keylength.setter
     def keylength(self, keylength):
-        if keylength in [2 ** x for x in range(10, 14, 1)]:
+        if keylength in self._key_map[self._algorithm]['range']:
             self._keylength = keylength
+
+    @property
+    def key_range(self):
+        """
+        List of allowed key lengths for the currently chosen algorithm.
+        """
+        return self._key_map[self._algorithm]['range']
+
+    @property
+    def ssh_version(self):
+        """
+        The version of the detected OpenSSH installation as tuple.
+        """
+        return self._ssh_version
 
     def keygen(self, filename='', passphrase=''):
         """
@@ -120,9 +172,4 @@ class CbSSHKeygen(CbBinary):
         pattern = re.compile(r'^.*_(\d+).(\d+)\D+.*$')
         result = pattern.search(ssh_bin.stderr)
         if result:
-            self._ssh_major = int(result.groups()[0])
-            self._ssh_minor = int(result.groups()[1])
-        if self._ssh_major > 5 or (self._ssh_major == 5 and self._ssh_minor >= 7):
-            self._algorithms.append('ecdsa')
-        if self._ssh_major > 6 or (self._ssh_major == 6 and self._ssh_minor >= 5):
-            self._algorithms.append('ed25519')
+            self._ssh_version = (int(result.groups()[0]), int(result.groups()[1]))
