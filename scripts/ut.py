@@ -130,16 +130,16 @@ def main():
     if skipped:
         print('Skipped Test Cases:\n')
         for skip in skipped:
-            print('   {module} {test}: {reason}\n'.format(
+            print('   {module} {test}: {reason}'.format(
                 module=skip[0],
                 test=' '.join(str(skip[1]).split(" ")[0].split('_')),
-                reason=skip[2])
+                reason=skip[2].strip())
             )
 
     if total_passed < (total_tests - total_skipped):
-        print("Overall Test Result: FAILED.\n")
+        print("\nOverall Test Result: FAILED.\n")
     else:
-        print("Overall Test Result: PASSED.\n")
+        print("\nOverall Test Result: PASSED.\n")
     return return_code
 
 
