@@ -39,6 +39,11 @@ ControlBeast Utilities
    :private-members:
    :special-members:
 
+.. autoclass:: controlbeast.utils.dynamic.CbDynamicIterable
+   :members:
+   :private-members:
+   :special-members:
+
 .. currentmodule:: controlbeast.utils.loader
 
 .. automodule:: controlbeast.utils.loader
