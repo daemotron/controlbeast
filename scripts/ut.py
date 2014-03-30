@@ -82,12 +82,16 @@ def main():
     return_code = os.EX_OK
 
     results = {}
+    skipped = []
 
     # Create a unittest runner and run all detected tests
     runner = unittest.TextTestRunner(stream=open('/dev/null', 'w'))
     for test_class in test_classes:
         suite = unittest.defaultTestLoader.loadTestsFromTestCase(test_class)
         result = runner.run(suite)
+        if result.skipped:
+            for test in result.skipped:
+                skipped.append((test_class.__name__, test[0], test[1]))
         results[test_class.__name__] = (len(result.failures), len(result.skipped), result.testsRun)
         if result.failures:
             return_code = os.EX_SOFTWARE
@@ -123,6 +127,15 @@ def main():
         total=total_tests,
         ratio=total_passed/(total_tests-total_skipped)
     ))
+    if skipped:
+        print('Skipped Test Cases:\n')
+        for skip in skipped:
+            print('   {module} {test}: {reason}\n'.format(
+                module=skip[0],
+                test=' '.join(str(skip[1]).split(" ")[0].split('_')),
+                reason=skip[2])
+            )
+
     if total_passed < (total_tests - total_skipped):
         print("Overall Test Result: FAILED.\n")
     else:
