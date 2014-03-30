@@ -7,7 +7,6 @@
     :license: ISC, see LICENSE for details.
 """
 import os
-from controlbeast import get_conf
 import controlbeast.cli.base
 from controlbeast.scm import scm_get_root, CbSCMRepoError
 
@@ -54,14 +53,6 @@ class AddCommand(controlbeast.cli.base.CbCommand):
             return self._terminate(err, os.EX_IOERR)
 
         # Test if host identifier already in use
-        if os.path.isdir(os.path.join(repository, get_conf('dir.repo.hosts'), name)):
-            return self._terminate('Identifier {id} already in use.'.format(id=name), os.EX_DATAERR)
-
-        # Create directory structure for new host
-        os.makedirs(os.path.join(repository, get_conf('dir.repo.hosts'), name))
-        os.makedirs(os.path.join(repository, get_conf('dir.repo.hosts'), name, get_conf('dir.host.base')))
-        os.makedirs(os.path.join(repository, get_conf('dir.repo.hosts'), name, get_conf('dir.host.jails')))
-        os.makedirs(os.path.join(repository, get_conf('dir.repo.hosts'), name, get_conf('dir.host.conf.auto')))
-        os.makedirs(os.path.join(repository, get_conf('dir.repo.hosts'), name, get_conf('dir.host.conf.custom')))
+        # TODO: complete implementation of handle method
 
         self._status = os.EX_OK

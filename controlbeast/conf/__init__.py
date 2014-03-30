@@ -12,6 +12,20 @@ from controlbeast.utils.dynamic import CbDynamicIterable
 from controlbeast.utils.singleton import CbSingleton
 
 
+def get_conf(key):
+    """
+    Get a global configuration value by its key.
+
+    :param str key: string identifying the requested configuration value
+    :returns the requested configuration value or None
+    """
+    configuration = CbConf.get_instance()
+    if key.upper() in configuration:
+        return configuration[key.upper()]
+    else:
+        return None
+
+
 @CbSingleton
 class CbConf(CbDynamicIterable):
     """

@@ -25,9 +25,9 @@ Repository Structure
 --------------------
 
 The directory structure inside a :program:`cb` repository takes into account that several host systems shall be
-manageable through the same repository. Thus, at top level of the repository, each directory created represents one
-host system (in short, *host*). Within each host directory, the following directory structure needs to exist by
-convention:
+manageable through the same repository. Thus, the master branch contains a host skeleton, whereas for each
+host system (in short, *host*), a named branch (normally based on the master branch) shall be created. Within each host
+branch, the following directory structure needs to exist by convention:
 
 basic
    contains meta configuration files in YAML format, describing the OS version to be expected, network configuration,

@@ -10,7 +10,7 @@
 
 from controlbeast.scm.base import CbSCMWrapper
 from controlbeast.utils import loader
-from controlbeast import get_conf
+from controlbeast.conf import get_conf
 
 _scm_wrappers = None
 _scm_handler = None

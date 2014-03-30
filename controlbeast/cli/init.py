@@ -8,9 +8,7 @@
 """
 import getpass
 import os
-from controlbeast import get_conf, get_version
 import controlbeast.cli.base
-from controlbeast.keystore import CbKeyStore
 from controlbeast.scm import scm_init, CbSCMBinaryError, CbSCMInitError, scm_commit, CbSCMCommitError
 
 
@@ -71,15 +69,7 @@ WARNING: leaving the password empty will entail unencrypted storage of
                     break
 
         # create basic directory structure
-        os.makedirs(os.path.join(path, get_conf('dir.repo.conf')))
-        os.makedirs(os.path.join(path, get_conf('dir.repo.hosts')))
-        os.makedirs(os.path.join(path, get_conf('dir.repo.recipes.python')))
-        os.makedirs(os.path.join(path, get_conf('dir.repo.recipes.yaml')))
-
-        # Set up key store and fill in some useless information
-        ks = CbKeyStore(file=os.path.join(path, get_conf('keystore.repo')), passphrase=password)
-        ks['version'] = get_version()
-        ks['created by'] = getpass.getuser()
+        # TODO: complete implementation of handle method
 
         # commit the changes
         try:
