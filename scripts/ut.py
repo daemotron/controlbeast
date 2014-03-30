@@ -88,37 +88,42 @@ def main():
     for test_class in test_classes:
         suite = unittest.defaultTestLoader.loadTestsFromTestCase(test_class)
         result = runner.run(suite)
-        results[test_class.__name__] = (len(result.failures), result.testsRun)
+        results[test_class.__name__] = (len(result.failures), len(result.skipped), result.testsRun)
         if result.failures:
             return_code = os.EX_SOFTWARE
 
     total_tests = 0
     total_passed = 0
     total_failed = 0
+    total_skipped = 0
 
     print("\nControlBeast Unit Test Result Summary:\n")
-    print("Test                   Passed   Failed    Total    % passed")
-    print("===========================================================")
+    print("Test                   Passed   Failed   Skipped   Total    % passed")
+    print("====================================================================")
     for key in sorted(results):
-        total_tests += results[key][1]
+        total_tests += results[key][2]
+        total_skipped += results[key][1]
         total_failed += results[key][0]
-        total_passed = total_tests - total_failed
-        print("{test: <20}      {passed: >3d}      {failed: >3d}      {total: >3d}     {ratio: >3.2%}".format(
+        total_passed = total_tests - total_failed - total_skipped
+        print(
+            "{test: <20}      {passed: >3d}      {failed: >3d}      {skipped: >4d}     {total: >3d}     {ratio: >3.2%}".format(
             test=key,
-            passed=results[key][1]-results[key][0],
+            passed=results[key][2]-results[key][0]-results[key][1],
             failed=results[key][0],
-            total=results[key][1],
-            ratio=(results[key][1]-results[key][0])/results[key][1]
+            skipped=results[key][1],
+            total=results[key][2],
+            ratio=(results[key][2]-results[key][0]-results[key][1])/(results[key][2]-results[key][1])
         ))
-    print("===========================================================")
-    print("{test: <20}      {passed: >3d}      {failed: >3d}      {total: >3d}     {ratio: >3.2%}\n".format(
+    print("====================================================================")
+    print("{test: <20}      {passed: >3d}      {failed: >3d}      {skipped: >4d}     {total: >3d}     {ratio: >3.2%}\n".format(
         test="TOTAL",
         passed=total_passed,
         failed=total_failed,
+        skipped=total_skipped,
         total=total_tests,
-        ratio=total_passed/total_tests
+        ratio=total_passed/(total_tests-total_skipped)
     ))
-    if total_passed < total_tests:
+    if total_passed < (total_tests - total_skipped):
         print("Overall Test Result: FAILED.\n")
     else:
         print("Overall Test Result: PASSED.\n")
