@@ -64,6 +64,8 @@ class CbSingleton:
             self.__annotations__ = decorated.__annotations__
         if hasattr(decorated, '__qualname__'):
             self.__qualname__ = decorated.__qualname__
+        if hasattr(decorated, '__mro__'):
+            self.__mro__ = decorated.__mro__
 
     def get_instance(self):
         """
