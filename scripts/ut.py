@@ -92,8 +92,8 @@ def main():
         if result.skipped:
             for test in result.skipped:
                 skipped.append((test_class.__name__, test[0], test[1]))
-        results[test_class.__name__] = (len(result.failures), len(result.skipped), result.testsRun)
-        if result.failures:
+        results[test_class.__name__] = (len(result.failures) + len(result.errors), len(result.skipped), result.testsRun)
+        if result.failures or result.errors:
             return_code = os.EX_SOFTWARE
 
     total_tests = 0
