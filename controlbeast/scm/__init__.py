@@ -32,7 +32,7 @@ def _load_scm_handler():
     """
     global _scm_handler
     if not _scm_handler:
-        scm_class = get_scm(get_conf('scm'))
+        scm_class = get_scm(get_conf('SCM_CLASS'))
         _scm_handler = scm_class()
 
 
