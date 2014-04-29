@@ -1,0 +1,24 @@
+# -- rescue.yml
+#
+# This is ControlBeast's rescue system configuration file, used to describe the rescue system configuration
+# for a host system managed by ControlBeast.
+#
+# This file's syntax follows the YAML 1.1 syntax specification (cf. http://yaml.org/spec/1.1/ for details).
+# Lines starting with a hash sign (#) are considered as comments and therefore ignored.
+#
+# Important Note:
+# As a general rule, all configuration designators shall be spelled in lower case letters.
+#
+
+# The remote host's ip address or FQDN
+host: 192.168.0.1
+
+# The user used to log into the rescue system
+user: root
+
+# Use the private key generated for this host to authenticate
+key: true
+
+# The password used to log into the rescue system. Ignored if
+# key is set to true.
+password: very secret

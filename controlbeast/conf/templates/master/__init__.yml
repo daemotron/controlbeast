@@ -1,0 +1,36 @@
+# -*- coding: utf-8 -*-
+#
+# controlbeast.templates.master
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+#
+# Directory template for populating a controlbeast repository
+# master branch.
+#
+# :copyright: Copyright 2013 by the ControlBeast team, see AUTHORS.
+# :license: ISC, see LICENSE for details.
+
+dirs:
+  base:
+    dirs:
+    files:
+      - network.yml
+      - rescue.yml
+      - system.yml
+  conf:
+    dirs:
+      auto:
+        dirs:
+        files:
+      custom:
+        dirs:
+        files:
+    files:
+  jails:
+    dirs:
+    files:
+  recipes:
+    dirs:
+      python:
+      yaml:
+    files:
+files:

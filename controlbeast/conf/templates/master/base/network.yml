@@ -1,0 +1,73 @@
+# -- network.yml
+#
+# This is ControlBeast's network configuration file, used to describe the network configuration
+# for a host system managed by ControlBeast.
+#
+# This file's syntax follows the YAML 1.1 syntax specification (cf. http://yaml.org/spec/1.1/ for details).
+# Lines starting with a hash sign (#) are considered as comments and therefore ignored.
+#
+# Important Note:
+# As a general rule, all configuration designators shall be spelled in lower case letters.
+#
+
+# The IPv4 related configuration
+#
+# The Route block is used to configure routing information. Currently supported options:
+#
+# default:  the IPv4 default router
+#
+#
+# For each network interface to be configured, create a member item within the ipv4 block and specify
+# the following items:
+#
+# dhcp:    if set to true, all other configuration information for this interface is ignored.
+# primary: the primary static IPv4 address to be  used for this network interface
+# netmask: the netmask valid for the primary IPv4 address
+# aliases: list of aliases to be configured for this network interface
+#
+ipv4:
+    route:
+      default: 192.168.0.1
+    re0:
+      dhcp: false
+      primary: 192.168.0.2
+      netmask: 255.255.255.0
+  #   aliases:
+  #     alias0:
+  #       ip: 192.168.0.2
+  #       netmask: 255.255.255.0
+
+
+# The IPv6 related configuration
+# uncomment ipv6 section below to active IPv6
+#
+# The Route block is used to configure routing information. Currently supported options:
+#
+# default:  the IPv6 default router
+#
+#
+# For each network interface to be configured, create a member item within the ipv4 block and specify
+# the following items:
+#
+# primary: the primary IPv6 address to be  used for this network interface
+# prefix:  the prefix length valid for the primary IPv6 address
+# aliases: list of aliases to be configured for this network interface
+#
+#ipv6:
+#    route:
+#      default: fe80::1
+#    re0:
+#      primary: fe80::2
+#      prefix:  64
+#      aliases:
+#        alias0:
+#          ip: fe80::3
+#          prefix: 64
+
+
+# DNS related configuration
+# Name Servers to be used for DNS resolution
+# These may be either IPv4 or IPv6 addresses.
+#
+dns:
+  - 192.168.0.1
