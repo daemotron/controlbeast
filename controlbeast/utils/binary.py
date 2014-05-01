@@ -9,9 +9,10 @@
 import os
 import subprocess
 from controlbeast.utils.convert import to_bytes, to_str
+from controlbeast.utils.file import CbFile
 
 
-class CbBinary(object):
+class CbBinary(CbFile):
     """
     Auxiliary class to ease implementing classes dealing with execution of external binaries.
     """
@@ -44,22 +45,6 @@ class CbBinary(object):
         if binary_name:
             self._binary_name = binary_name
         self._detect_binary()
-
-    @staticmethod
-    def _check_access(file, mode):
-        """
-        Checks if a file system object can be accessed in a specific mode
-        """
-        # perform test on effective [g,u]uid on platforms supporting this in order to
-        # grant respecting an eventually set SUID bit
-        status = False
-        if os.access in os.supports_effective_ids:
-            # noinspection PyArgumentList
-            status = os.access(file, mode, effective_ids=True)
-        else:
-            # noinspection PyArgumentList
-            status = os.access(file, mode, effective_ids=False)
-        return status
 
     def _detect_binary(self):
         """
