@@ -10,27 +10,16 @@
 # :license: ISC, see LICENSE for details.
 
 dirs:
-  base:
-    dirs:
-    files:
-      - network.yml
-      - rescue.yml
-      - system.yml
-  conf:
-    dirs:
-      auto:
-        dirs:
-        files:
-      custom:
-        dirs:
-        files:
-    files:
-  jails:
-    dirs:
-    files:
-  recipes:
-    dirs:
-      python:
-      yaml:
-    files:
+  - base
+  - conf
+  - conf/auto
+  - conf/custom
+  - jails
+  - recipes
+  - recipes/python
+  - recipes/yaml
+
 files:
+  - base/network.yml
+  - base/rescue.yml
+  - base/system.yml
