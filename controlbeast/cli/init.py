@@ -48,8 +48,8 @@ class InitCommand(controlbeast.cli.base.CbCommand):
         template = CbTemplate('master', path)
         try:
             template.deploy()
-        except (RuntimeError, PermissionError):
-            self._status = os.EX_IOERR
+        except (RuntimeError, PermissionError) as err:
+            return self._terminate(err, os.EX_IOERR)
 
         # commit the changes
         try:
