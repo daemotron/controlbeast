@@ -7,7 +7,8 @@
     :license: ISC, see LICENSE for details.
 """
 import os
-from controlbeast.conf import get_conf
+import yaml
+from controlbeast.conf import get_conf, CbConf
 from controlbeast.utils.file import CbFile
 
 
@@ -27,6 +28,9 @@ class CbTemplate(CbFile):
 
     #: Path to deploy to
     _path = None
+
+    #: Dictionary constructed form the template's __init__.yml
+    _ini = None
 
     def __init__(self, template='', path=None):
         """
@@ -64,9 +68,31 @@ class CbTemplate(CbFile):
         if self._check_template_name(template):
             self._template = template
 
+    def deploy(self):
+        """
+        Deploy the template onto the file system.
+        """
+        if not self._ini:
+            self._load_template()
+        if not self._ini:
+            raise RuntimeError('Could not load template. __init__.yml missing or damaged.')
+        if 'dirs' in self._ini:
+            for dirname in self._ini['dirs']:
+                # noinspection PyArgumentList
+                os.makedirs(os.path.join(self._path, dirname), exist_ok=True)
+        if 'files' in self._ini:
+            conf = CbConf.get_instance()
+            for filename in self._ini['files']:
+                with open(os.path.join(get_conf('TEMPLATE_PATH'), self._template, filename), 'r') as fp:
+                    content = fp.read()
+                    content = content.format(**conf)
+                    with open(os.path.join(self._path, filename), 'w') as wp:
+                        wp.write(content)
+
     def _check_path(self, path):
         """
         Check whether the given path exists and if yes, if it's writeable.
+
         :param str path:    Name of the path to be tested
         :return:            True if the path can be used for deployment, False if not
         :rtype:             bool
@@ -95,8 +121,21 @@ class CbTemplate(CbFile):
         :return:                True if the template is valid, False if not
         :rtype:                 bool
         """
-        filename = os.path.join(get_conf('TEMPLATE_PATH'), template), '__init__.yml'
+        filename = os.path.join(get_conf('TEMPLATE_PATH'), template, '__init__.yml')
+        # noinspection PyTypeChecker
         if self._check_file_exists(filename) and self._check_access(filename, os.R_OK):
             return True
         else:
             return False
+
+    def _load_template(self):
+        """
+        Load the template information from the template's __init__.yml
+        """
+        filename = os.path.join(get_conf('TEMPLATE_PATH'), self._template, '__init__.yml')
+        # noinspection PyTypeChecker
+        with open(filename, 'r') as fp:
+            try:
+                self._ini = yaml.safe_load(fp)
+            except yaml.YAMLError:
+                self._ini = None

@@ -16,7 +16,7 @@ class CbFile(object):
     """
 
     @staticmethod
-    def _check_access(file, mode):
+    def _check_access(file, mode) -> bool:
         """
         Checks if a file system object can be accessed in a specific mode
         """
@@ -32,17 +32,17 @@ class CbFile(object):
         return status
 
     @staticmethod
-    def _check_file_exists(filename):
+    def _check_file_exists(filename) -> bool:
         """
-        Checks if a file does exist and is a regular file
-        :param str filename:    name of the file to be tested
-        :return:                True if the file exists, False if not
-        :rtype:                 bool
-        """
+            Checks if a file does exist and is a regular file
+            :param str filename:    name of the file to be tested
+            :return:                True if the file exists, False if not
+            :rtype:                 bool
+            """
         return os.path.exists(os.path.abspath(filename)) and os.path.isfile(os.path.abspath(filename))
 
     @staticmethod
-    def _check_dir_exists(path):
+    def _check_dir_exists(path) -> bool:
         """
         Checks if a path exists and is a directory
 
