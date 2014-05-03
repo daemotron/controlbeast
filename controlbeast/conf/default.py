@@ -28,3 +28,6 @@ TEMPLATE_PATH = os.path.join(os.path.dirname(os.path.realpath(__file__)), 'templ
 
 # Version management system implementation to be used
 SCM_CLASS = 'Git'
+
+# Default branch to be used for creating new host systems
+SCM_BRANCH = 'master'
