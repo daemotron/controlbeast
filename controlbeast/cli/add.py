@@ -17,15 +17,14 @@ class AddCommand(controlbeast.cli.base.CbCommand):
     Command class implementing the add command
     """
 
+    _usg_message_1 = "usage: {executable} {command} [options] <name>"
+    _arg_limits = (2, -1)
+
     _help = 'Add a new host to the ControlBeast repository'
     _arg_list = (
         (
             ('-d', '--dir'),
             {'help': 'Location for ControlBeast repository (defaults to current work directory)', 'action': 'store'}
-        ),
-        (
-            ('-n', '--name'),
-            {'help': 'Identifier of the host to be added to the repository', 'action': 'store'}
         ),
         (
             ('-s', '--source'),
@@ -41,19 +40,19 @@ class AddCommand(controlbeast.cli.base.CbCommand):
         """
         Command handler for the add command
         """
+        # get identifier, either form arguments or from direct input
+        if len(self._argv) > 2:
+            name = self._argv[-1]
+        else:
+            name = ''
+            while name == '':
+                name = input('Please enter an identifier for the host:\n>> ')
+
         # get path to operate on/from, either from arguments or from CWD
         if 'dir' in self._args and self._args.dir:
             path = self._args.dir
         else:
             path = os.path.abspath(os.getcwd())
-
-        # get identifier, either form arguments or from direct input
-        if 'name' in self._args and self._args.name:
-            name = self._args.name
-        else:
-            name = ''
-            while name == '':
-                name = input('Please enter an identifier for the host:\n>> ')
 
         # get source branch from arguments or from default
         if 'source' in self._args and self._args.source:

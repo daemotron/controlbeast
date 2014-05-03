@@ -38,6 +38,9 @@ class CbCommand(object):
     _argv = None
     _args = None
     _arg_list = ()
+    _usg_message_1 = "usage: {executable} {command} [options]"
+    _usg_message_2 = "usage: {executable} {command}"
+    _arg_limits = (2, None)
 
     def __init__(self, command, executable):
         self._status = 0
@@ -63,11 +66,11 @@ class CbCommand(object):
         #noinspection PyUnusedLocal
         usage_message = None
         if self._arg_list:
-            usage_message = "usage: %s %s [options]" % (self._executable, self._command)
+            usage_message = self._usg_message_1.format(executable=self._executable, command=self._command)
         else:
-            usage_message = "usage: %s %s" % (self._executable, self._command)
+            usage_message = self._usg_message_2.format(executable=self._executable, command=self._command)
         if self._help:
-            usage_message += "\n\n%s" % self._help
+            usage_message += "\n\n{}".format(self._help)
         if self._arg_list:
             usage_message += "\n\nAvailable options:\n"
             for arg in self._arg_list:
@@ -92,7 +95,7 @@ class CbCommand(object):
             parser = argparse.ArgumentParser(self._executable, add_help=False, usage=self.usage()[7:])
             for arg in self._arg_list:
                 parser.add_argument(*arg[0], **arg[1])
-            self._args = parser.parse_args(argv[2:])
+            self._args = parser.parse_args(argv[self._arg_limits[0]:self._arg_limits[1]])
         else:
             self._args = None
         self.handle()
