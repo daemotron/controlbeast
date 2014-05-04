@@ -11,7 +11,9 @@
 class CbSingleton:
     """
     Auxiliary class to ease implementing lazy singletons.
-    This class must be applied as a decorator instead of inheriting from this class. Example::
+    This class must be applied as a decorator instead of inheriting from this class. Example:
+
+    .. sourcecode:: python
 
        @CbSingleton
        class MyClass(object)

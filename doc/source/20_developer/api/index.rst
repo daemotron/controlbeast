@@ -6,6 +6,7 @@ ControlBeast API Documentation
 
    cli
    conf
+   core
    keystore
    scm
    ssh

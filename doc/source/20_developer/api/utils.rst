@@ -44,6 +44,15 @@ ControlBeast Utilities
    :private-members:
    :special-members:
 
+.. currentmodule:: controlbeast.utils.file
+
+.. automodule:: controlbeast.utils.file
+
+.. autoclass:: controlbeast.utils.file.CbFile
+   :members:
+   :private-members:
+   :special-members:
+
 .. currentmodule:: controlbeast.utils.loader
 
 .. automodule:: controlbeast.utils.loader
@@ -72,3 +81,12 @@ ControlBeast Utilities
 .. autofunction:: get_git_revision
 
 .. autofunction:: get_version
+
+.. currentmodule:: controlbeast.utils.yaml
+
+.. automodule:: controlbeast.utils.yaml
+
+.. autoclass:: controlbeast.utils.yaml.CbYaml
+   :members:
+   :private-members:
+   :special-members:

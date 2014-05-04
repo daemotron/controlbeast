@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """
-    controlbeast.conf.global
-    ~~~~~~~~~~~~~~~~~~~~~~~~
+    controlbeast.conf.default
+    ~~~~~~~~~~~~~~~~~~~~~~~~~
 
     :copyright: Copyright 2014 by the ControlBeast team, see AUTHORS.
     :license: ISC, see LICENSE for details.

@@ -19,6 +19,32 @@ class CbTemplate(CbFile):
     The Template Object can be used to deploy ControlBeast templates to
     a specific location on the file system.
 
+    A ControlBeast template consists at least of the template's root directory,
+    containing a file named ``__init__.yml``. This file is expected to be in valid
+    YAML 1.1 syntax, describing the template's content.
+
+    .. sourcecode:: yaml
+
+       # list of directories to be created by the template
+       dirs:
+         - dir1
+         - dir2
+         - dir2/dir3
+
+       # list of files to be deployed by the template
+       files:
+         - dir1/file1.txt
+         - dir2/dir3/file2.txt
+
+    At least one of the ``dirs`` or ``files`` sections must be present; otherwise nothing
+    will be deployed. The file templates described in the ``files`` section must be present within
+    the template's directory, mirroring the described directory structure. Taking the above-given
+    example, the template file ``file1.txt`` must be located within ``dir1`` in the template's root
+    directory.
+
+    All template files, including ``__init__.yml`` may use Python format strings with designators
+    defined in :py:mod:`controlbeast.conf.default`.
+
     :param str template:    name of the template to work with
     :param str path:        destination for the template deployment
     """
