@@ -20,6 +20,8 @@ dirs:
   - recipes/yaml
 
 files:
-  - base/network.yml
-  - base/rescue.yml
-  - base/system.yml
+  - {HOST_NETWORK_FILE}
+  - {HOST_RESCUE_FILE}
+  - {HOST_FS_FILE}
+  - {HOST_OS_FILE}
+  - {HOST_SERVICE_FILE}
