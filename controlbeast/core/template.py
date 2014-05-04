@@ -7,9 +7,9 @@
     :license: ISC, see LICENSE for details.
 """
 import os
-import yaml
 from controlbeast.conf import get_conf, CbConf
 from controlbeast.utils.file import CbFile
+from controlbeast.utils.yaml import CbYaml
 
 
 class CbTemplate(CbFile):
@@ -133,9 +133,4 @@ class CbTemplate(CbFile):
         Load the template information from the template's __init__.yml
         """
         filename = os.path.join(get_conf('TEMPLATE_PATH'), self._template, '__init__.yml')
-        # noinspection PyTypeChecker
-        with open(filename, 'r') as fp:
-            try:
-                self._ini = yaml.safe_load(fp)
-            except yaml.YAMLError:
-                self._ini = None
+        self._ini = CbYaml(filename)
