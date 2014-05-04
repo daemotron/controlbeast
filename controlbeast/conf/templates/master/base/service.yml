@@ -1,0 +1,15 @@
+# -- service.yml
+#
+# This is ControlBeast's service configuration file, used to describe the service configuration
+# for a host system managed by ControlBeast.
+#
+# This file's syntax follows the YAML 1.1 syntax specification (cf. http://yaml.org/spec/1.1/ for details).
+# Lines starting with a hash sign (#) are considered as comments and therefore ignored.
+#
+# Important Note:
+# As a general rule, all configuration designators shall be spelled in lower case letters.
+#
+
+# enable the SSH daemon by default
+sshd:
+  enable: true

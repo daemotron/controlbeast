@@ -1,0 +1,80 @@
+# -- fs.yml
+#
+# This is ControlBeast's file system configuration file, used to describe the file system configuration
+# for a host system managed by ControlBeast.
+#
+# This file's syntax follows the YAML 1.1 syntax specification (cf. http://yaml.org/spec/1.1/ for details).
+# Lines starting with a hash sign (#) are considered as comments and therefore ignored.
+#
+# Important Note:
+# As a general rule, all configuration designators shall be spelled in lower case letters.
+#
+
+
+# Hard disk configuration
+#
+# For each hard disk to be managed by ControlBeast, insert an adequate designation block, named by the respective
+# device name and providing the following information:
+#
+# scheme:     partition scheme to be used (currently, GPT is the only supported scheme)
+# align:      block size in bytes to be used for alignment
+# partitions: mapping of partitions. Each partition block is opened by the partition's device name and provides
+#             the following information:
+#   type:       partition type (cf. examples for possible options)
+#   size:       partition size; can be suffixed as per what the gpart command does understand. If none is indicated,
+#               the remaining space on the disk device shall be allocated to this partition (i. e. subsequent partitions
+#               will not be created!)
+#   label:      label of the partition to be set
+disks:
+  ada0:
+    scheme: gpt
+    align: 4096
+    partitions:
+      ada0p1:
+        size: 64k
+        type: freebsd-boot
+      ada0p2:
+        size: 4G
+        type: freebsd-swap
+        label: swap0
+      ada0p3:
+        type: freebsd-zfs
+        label: disk0
+
+
+# Bootloader configuration
+#
+# Currently, only the ZFS boot loading scheme is supported
+boot:
+  loader: zfs
+  pool: zroot
+
+
+# File system layout configuration
+#
+# Currently, only ZFS based file system layouts are supported. For each Zpool to be managed by ControlBeast, insert an
+# adequate designation block, named by the Zpool name and providing the following information:
+#
+# layout:     Zpool layout to be used (one of mirror, raidz1, raidz2, raidz3, ...)
+# providers:  list of provider devices used to building the pool. The number of providers indicated must be compliant
+#             with the selected Zpool layout
+# datasets:   for each dataset to be created within the Zpool, insert an adequate designation block, named by the
+#             ZFS dataset's name and providing the following information:
+#   mountpoint:  mount point of the dataset
+#   compress:    either a valid ZFS compression algorithm or false (no compression)
+#   noatime:     set the noatime flag on the dataset if true
+#   nosuid:      set the nosuid flag on the dataset if true
+#   mode:        set the mountpoint to the indicated mode (octal notation method used)
+zfs:
+  pools:
+    zroot:
+      layout: mirror
+      providers:
+        - disk0
+      datasets:
+        root:
+          mountpoint: legacy
+          compress: false
+          noatime: true
+          nosuid: false
+          mode: 0755

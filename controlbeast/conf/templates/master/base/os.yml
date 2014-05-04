@@ -1,0 +1,20 @@
+# -- os.yml
+#
+# This is ControlBeast's operating system configuration file, used to describe the operating system configuration
+# for a host system managed by ControlBeast.
+#
+# This file's syntax follows the YAML 1.1 syntax specification (cf. http://yaml.org/spec/1.1/ for details).
+# Lines starting with a hash sign (#) are considered as comments and therefore ignored.
+#
+# Important Note:
+# As a general rule, all configuration designators shall be spelled in lower case letters.
+#
+
+# Operating system configuration.
+#
+# ControlBeast currently only supports the FreeBSD operating system with
+# versions >= 9.2
+#
+os:
+  type: FreeBSD
+  version: 10.0
