@@ -108,6 +108,7 @@ class TestCbSSHKeygen(TestCase):
         self.assertListEqual(obj.key_range, [1024])
 
     @skipUnless(_ssh.ssh_version >= (5, 7), 'ECDSA not available in OpenSSH < 5.7')
+    @skipIf(sys.platform == 'darwin', 'ECDSA broken on OS X (Darwin)')
     def test_06(self):
         """
         Test Case 06:
