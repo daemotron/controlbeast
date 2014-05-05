@@ -8,7 +8,8 @@
 """
 import tempfile
 import os
-from unittest import TestCase, skipUnless
+from unittest import TestCase, skipUnless, skipIf
+import sys
 from controlbeast.ssh import CbSSHKeygen
 
 
@@ -179,6 +180,7 @@ class TestCbSSHKeygen(TestCase):
         self.assertEqual(obj.keylength, 2048)
 
     @skipUnless(_ssh.ssh_version >= (5, 7), 'ECDSA not available in OpenSSH < 5.7')
+    @skipIf(sys.platform == 'darwin', 'ECDSA broken on OS X (Darwin)')
     def test_12(self):
         """
         Test Case 12:
@@ -259,6 +261,7 @@ class TestCbSSHKeygen(TestCase):
         os.unlink('.'.join((filename, 'pub')))
 
     @skipUnless(_ssh.ssh_version >= (5, 7), 'ECDSA not available in OpenSSH < 5.7')
+    @skipIf(sys.platform == 'darwin', 'ECDSA broken on OS X (Darwin)')
     def test_17(self):
         """
         Test Case 17:
