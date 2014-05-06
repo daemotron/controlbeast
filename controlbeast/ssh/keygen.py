@@ -70,12 +70,6 @@ class CbSSHKeygen(CbBinary):
     #: version of OpenSSH
     _ssh_version = (0, 0)
 
-    #: Major version of SSH
-    _ssh_major = 0
-
-    #: Minor version of SSH
-    _ssh_minor = 0
-
     def __init__(self):
         self._arguments = []
         super(CbSSHKeygen, self).__init__(binary_name='ssh-keygen')
