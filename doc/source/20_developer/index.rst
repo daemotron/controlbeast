@@ -6,5 +6,6 @@ ControlBeast Developer's Guide
 
    hosting
    style
-   api/index
-   test/index
+   10_features/index
+   20_api/index
+   30_test/index

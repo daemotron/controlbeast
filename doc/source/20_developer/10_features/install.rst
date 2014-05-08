@@ -1,0 +1,82 @@
+Installation
+============
+
+Synopsis
+--------
+
+.. sourcecode:: sh
+
+   cb install [options]
+
+Description
+-----------
+
+The installation feature shall be used to deploy a ControlBeast-managed `FreeBSD`_ installation onto any
+headless system, using the configuration information from the current ControlBeast repository branch.
+Therefore, this feature can also be used for initiating a bare metal recovery.
+
+Process Steps
+-------------
+
+==== ============= ==========================================================================================
+No.  System        Description
+==== ============= ==========================================================================================
+01   local         **Create or update fstab** and store it within the ``conf/auto`` section of the
+                   ControlBeast repository.
+02   local         **Create or update minimal rc.conf** and store it within the ``conf/auto`` section of the
+                   ControlBeast repository. This ``rc.conf`` file shall not start any services apart from
+                   ``sshd`` (and eventually ZFS, if appropriate), but only provide a basic network and
+                   system configuration.
+03   local         **Create or update sshd.config** and store it within the ``conf/auto`` section of the
+                   ControlBeast repository.
+04   local         **Create or update loader.conf** and store it within the ``conf/auto`` section of the
+                   ControlBeast repository.
+05   local         **Create or update pf.conf** and store it within the ``conf/auto`` section of the
+                   ControlBeast repository.
+06   rescue        **Cleanse hard disks** by copying binary zero's from ``/dev/zero`` onto the device. For
+                   flash memory devices (such as SSD disks), only overwrite the boot sector and partition
+                   table. For classic hard disks, overwrite the full disk.
+07   rescue        **Create partition scheme** on disks used for installation.
+08   rescue        **Create partitions** on disks used for installation.
+09   rescue        **Create disk labels** on partitions where applicable.
+10   rescue        **Create file systems** on partitions or disk labels where applicable.
+11   rescue        **Write boot code** either to MBR or to dedicated boot partition, depending on the
+                   chosen partition scheme.
+12   rescue        **Create Zpool** from partitions where applicable.
+13   rescue        **Create ZFS Datasets** on Zpool where applicable and set appropriate options.
+14   rescue        **Create temporary mount point** for the installation.
+15   rescue        **Mount partitions and Datasets** on the temporary mount point, including ``/dev``.
+                   If ZFS is used, remount file systems to generate a ``zpool.cache``.
+16   rescue        **Fetch and extract FreeBSD system** packages to the temporary mount point. The minimum
+                   required are ``base.txz`` and ``kernel.txz``
+17   rescue        **Deploy loader.conf, zpool.cache, fstab, rc.conf, pf.conf and sshd.config** onto the
+                   fresh installation at the temporary mount point.
+18   rescue        **Deploy base system configuration** files from ``conf/custom`` onto the fresh
+                   installation at the temporary mount point.
+19   rescue        **Create ControlBeast user** in mounted environment, add it to the appropriate groups
+                   and deploy a valid SSH public key in order to grant access for ControlBeast.
+20   rescue        **Fetch FreeBSD Sources** for the base system and store them on the mounted system.
+21   rescue        **Compile and Deploy Custom Kernel** if appropriate
+22   rescue        **Unmount file systems** from temporary mount point
+23   rescue        **Set mount points** for ZFS datasets where necessary
+24   rescue        **Reboot** from local disk
+25   local         **Verify** the server can be pinged and accessed via SSH.
+26   local         **Set Stage Index** to stage 1 if verification succeeded, otherwise to stage 0.
+27   local         **Commit and Tag** ControlBeast repository to document the installation action
+==== ============= ==========================================================================================
+
+Required Information
+--------------------
+
+============================== =================== ===============================================================
+Information                    Steps               Source
+============================== =================== ===============================================================
+Hard disk devices              06, 07, 08          **configuration:** ``fs.yml``
+Partition Scheme               07, 08, 11          **configuration:** ``fs.yml``
+Partition Mount Points         01, 11, 15, 22      **configuration:** ``fs.yml``
+Zpools                         02, 12, 15          **configuration:** ``fs.yml``
+ZFS Datasets                   13                  **configuration:** ``fs.yml``
+ZFS Mount Points               04, 13, 15, 22, 23  **configuration:** ``fs.yml``
+============================== =================== ===============================================================
+
+.. _FreeBSD: http://www.freebsd.org/

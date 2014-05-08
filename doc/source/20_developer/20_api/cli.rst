@@ -15,14 +15,6 @@ ControlBeast Command Line Interface
    :members:
    :private-members:
 
-.. currentmodule:: controlbeast.cli.add
-
-.. automodule:: controlbeast.cli.add
-
-.. autoclass:: AddCommand
-   :members:
-   :private-members:
-
 .. currentmodule:: controlbeast.cli.commit
 
 .. automodule:: controlbeast.cli.commit
@@ -44,6 +36,14 @@ ControlBeast Command Line Interface
 .. automodule:: controlbeast.cli.init
 
 .. autoclass:: InitCommand
+   :members:
+   :private-members:
+
+.. currentmodule:: controlbeast.cli.new
+
+.. automodule:: controlbeast.cli.new
+
+.. autoclass:: NewCommand
    :members:
    :private-members:
 
