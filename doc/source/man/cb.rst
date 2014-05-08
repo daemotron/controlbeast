@@ -54,9 +54,6 @@ jails
 Commands
 --------
 
-add
-   Add a new host to an existing ControlBeast repository
-
 commit
    Commit changes to a ControlBeast repository
 
@@ -65,6 +62,9 @@ help
 
 init
    Initialise a ControlBeast repository
+
+new
+   Create a new host within an existing ControlBeast repository
 
 version
    Show version information

@@ -12,7 +12,7 @@ from controlbeast.conf import get_conf
 from controlbeast.scm import scm_get_root, CbSCMRepoError, scm_get_branches, scm_checkout, scm_create_branch
 
 
-class AddCommand(controlbeast.cli.base.CbCommand):
+class NewCommand(controlbeast.cli.base.CbCommand):
     """
     Command class implementing the add command
     """
@@ -20,7 +20,7 @@ class AddCommand(controlbeast.cli.base.CbCommand):
     _usg_message_1 = "usage: {executable} {command} [options] <name>"
     _arg_limits = (2, -1)
 
-    _help = 'Add a new host to the ControlBeast repository'
+    _help = 'Create a new host within the ControlBeast repository'
     _arg_list = (
         (
             ('-d', '--dir'),
