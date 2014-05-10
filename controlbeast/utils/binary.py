@@ -41,6 +41,15 @@ class CbBinary(CbFile):
     #: Arguments to be passed to the binary
     _arguments = []
 
+    #: Device or socket to be used as stdin
+    _stdin_dev = subprocess.PIPE
+
+    #: Device or socket to be used as stdout
+    _stdout_dev = subprocess.PIPE
+
+    #: Device or socket to be used as stderr
+    _stderr_dev = subprocess.PIPE
+
     def __init__(self, binary_name=''):
         if binary_name:
             self._binary_name = binary_name
@@ -65,7 +74,7 @@ class CbBinary(CbFile):
         arguments = [self._binary_path]
         arguments.extend(self._arguments)
         process = subprocess.Popen(
-            arguments, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE, close_fds=close_fds
+            arguments, stdin=self._stdin_dev, stdout=self._stdout_dev, stderr=self._stderr_dev, close_fds=close_fds
         )
         try:
             self._stdout, self._stderr = process.communicate(input=self._stdin, timeout=self._timeout)

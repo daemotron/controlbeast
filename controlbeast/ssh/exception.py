@@ -98,3 +98,16 @@ class CbSSHExecutionError(CbSSHError):
             message=self._message,
             command=self._command
         )
+
+
+class CbSSHAgentError(CbSSHError):
+    """
+    SSH Agent Error
+
+    This exception is raised when the SSH agent is not available or reacts in an unexpected way.
+    """
+    def __str__(self):
+        if self._message:
+            return "SSH agent error:\n{message}".format(message=self._message)
+        else:
+            return "SSH agent operation failed. Probably, ssh-agent is not running or improperly configured."

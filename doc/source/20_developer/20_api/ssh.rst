@@ -49,6 +49,15 @@ SSH Key Generation
    :members:
 
 
+SSH Agent
+---------
+
+.. currentmodule:: controlbeast.ssh.agent
+
+.. autoclass:: CbSSHAgent
+   :members:
+
+
 Exceptions
 ----------
 
@@ -65,6 +74,8 @@ Exceptions
 .. autoexception:: controlbeast.ssh.exception.CbSSHCommunicationError
 
 .. autoexception:: controlbeast.ssh.exception.CbSSHExecutionError
+
+.. autoexception:: controlbeast.ssh.exception.CbSSHAgentError
 
 
 SSH Library API
