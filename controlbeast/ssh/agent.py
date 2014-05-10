@@ -51,16 +51,17 @@ class CbSSHAgent(CbBinary):
         """
         List of keys currently represented by the agent
         """
-        self._arguments = ['-l']
-        self._execute()
         keys = []
-        pattern = re.compile(
-            r'^(?P<keylength>\d+)\s+(?P<fingerprint>[0-9a-fA-F:]+)\s+(?P<filename>.+?)\s\((?P<keytype>\w+?)\)$'
-        )
-        for line in self.stdout.splitlines():
-            result = pattern.search(line)
-            if 'filename' in result.groupdict().keys():
-                keys.append(result.groupdict()['filename'])
+        if self._socket:
+            self._arguments = ['-l']
+            self._execute()
+            pattern = re.compile(
+                r'^(?P<keylength>\d+)\s+(?P<fingerprint>[0-9a-fA-F:]+)\s+(?P<filename>.+?)\s\((?P<keytype>\w+?)\)$'
+            )
+            for line in self.stdout.splitlines():
+                result = pattern.search(line)
+                if 'filename' in result.groupdict().keys():
+                    keys.append(result.groupdict()['filename'])
         return keys
 
     def _operate(self, filename='', action='add'):
