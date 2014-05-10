@@ -16,6 +16,8 @@
 # For each hard disk to be managed by ControlBeast, insert an adequate designation block, named by the respective
 # device name and providing the following information:
 #
+# device:     type of disk device. Set to ssd for solid state disks and other flash-based storage devices; otherwise
+#             to legacy
 # scheme:     partition scheme to be used (currently, GPT is the only supported scheme)
 # align:      block size in bytes to be used for alignment
 # partitions: mapping of partitions. Each partition block is opened by the partition's device name and provides
@@ -27,6 +29,7 @@
 #   label:      label of the partition to be set
 disks:
   ada0:
+    device: legacy
     scheme: gpt
     align: 4096
     partitions:

@@ -1,15 +1,45 @@
+.. include:: ./stages.ref
+
 General Feature Overview
 ========================
 
 The ControlBeast features refer to different stages, corresponding to different progress in deployment
 of the system. The stages are:
 
-* **Stage 0:** undefined state. Initially, a system is always assumed to be at stage 0.
-* **Stage 1:** host system installed and accessible for management through ControlBeast.
-* **Stage 2:** host system with package source(s) configured
-* **Stage 3:** host system with packages deployed
-* **Stage 4:** host system with host services deployed and running
-* **Stage 5:** complete system with jails deployed
+======================== ====================================================================================
+Stage Code               Description
+======================== ====================================================================================
+|Stage Undefined|        undefined state. Initially, a system is always assumed to be at this stage
+|Stage Purged|           clean state. Disks are clean and ready for installation.
+|Stage Installed|        host system installed and accessible for management through ControlBeast.
+|Stage PackageSource|    host system with package source(s) configured
+|Stage PackageDeployed|  host system with packages deployed
+|Stage Service|          host system with host services deployed and running
+|Stage Jails|            complete system with jails deployed
+======================== ====================================================================================
+
+Stage codes in between of the ones defined above can be used to signalize being in transition between one
+of the stages above.
+
+Purging
+-------
+
+Delete all data from system's hard disks by overwriting them with binary zeros.
+
+Prerequisites
+~~~~~~~~~~~~~
+
+* System being at any stage
+* Remote system booted into rescue system
+* Remote system's rescue system accessible via SSH
+* System configuration available in local ControlBeast repository
+
+Expected Result: Stage |Stage Purged|
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+* clean hard disks
+* no partitions
+* no operating system installed
 
 Installation
 ------------
@@ -20,13 +50,13 @@ to the system.
 Prerequisites
 ~~~~~~~~~~~~~
 
-* System being at any stage
+* System being at stage |Stage Purged|
 * Remote system booted into rescue system
 * Remote system's rescue system accessible via SSH
 * System configuration available in local ControlBeast repository
 
-Expected Result: Stage 1
-~~~~~~~~~~~~~~~~~~~~~~~~
+Expected Result: Stage |Stage Installed|
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 * FreeBSD installed
 * Custom Kernel installed (if applicable)
@@ -44,10 +74,10 @@ by a jail offering a local `poudriere`_ service.
 Prerequisites
 ~~~~~~~~~~~~~
 
-* System at stage 1 or greater
+* System at stage |Stage Installed| or greater
 
-Expected Result: Stage 2
-~~~~~~~~~~~~~~~~~~~~~~~~
+Expected Result: Stage |Stage PackageSource|
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 * Package source available in host system
 * Packages can be created if necessary
@@ -61,10 +91,10 @@ package source. If necessary, build needed packages using `poudriere`_ before at
 Prerequisites
 ~~~~~~~~~~~~~
 
-* System at stage 2 or greater
+* System at stage |Stage PackageSource| or greater
 
-Expected Result: Stage 3
-~~~~~~~~~~~~~~~~~~~~~~~~
+Expected Result: Stage |Stage PackageDeployed|
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 * Packages (independent of services, like e. g. `vim`_) installed
 * Configuration specific to packages deployed (e. g. matching dotfile)
@@ -79,10 +109,10 @@ etc.) and starting the services.
 Prerequisites
 ~~~~~~~~~~~~~
 
-* System at stage 3 or greater
+* System at stage |Stage PackageDeployed| or greater
 
-Expected Result: Stage 4
-~~~~~~~~~~~~~~~~~~~~~~~~
+Expected Result: Stage |Stage Service|
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 * Service packages installed
 * Services configured
@@ -97,10 +127,10 @@ Create jails for services to be hosted within a jailed environment, and populate
 Prerequisites
 ~~~~~~~~~~~~~
 
-* System at stage 4 or greater
+* System at stage |Stage Service| or greater
 
-Expected Result: Stage 5
-~~~~~~~~~~~~~~~~~~~~~~~~
+Expected Result: Stage |Stage Jails|
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 * Host configuration for jails deployed and activated (e. g. additional network aliases etc.)
 * File systems for jails created and populated with base system (minimum: ``base.txz``)
@@ -117,7 +147,7 @@ from third party packages or ports).
 Prerequisites
 ~~~~~~~~~~~~~
 
-* System at stage 1 or greater
+* System at stage |Stage Installed| or greater
 
 Expected Result
 ~~~~~~~~~~~~~~~
@@ -136,7 +166,7 @@ packages or ports) within the same major version (e. g. from 10.0 to 10.1).
 Prerequisites
 ~~~~~~~~~~~~~
 
-* System at stage 1 or greater
+* System at stage |Stage Installed| or greater
 
 Expected Result
 ~~~~~~~~~~~~~~~
@@ -162,7 +192,7 @@ from third party packages or ports).
 Prerequisites
 ~~~~~~~~~~~~~
 
-* System at stage 2 or greater
+* System at stage |Stage PackageSource| or greater
 
 Expected Result
 ~~~~~~~~~~~~~~~
@@ -177,5 +207,5 @@ Package Source Jail Minor Upgrade
 Upgrade a package jail's base system (i. e. only the parts coming from FreeBSD itself, not from third party
 packages or ports) within the same major version (e. g. from 10.0 to 10.1).
 
-.. _poudriere: http://etoilebsd.net/poudriere
+.. _poudriere: https://fossil.etoilebsd.net/poudriere/
 .. _vim: http://www.vim.org/

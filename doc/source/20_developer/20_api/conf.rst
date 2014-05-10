@@ -68,3 +68,39 @@ Host Configuration Attributes
 .. py:data:: HOST_SERVICE_FILE
 
    Name of the YAML file containing service configuration
+
+.. py:data:: HOST_KEY_STORE
+
+   Name of the key store file containing arbitrary information
+
+
+Stage Codes
+~~~~~~~~~~~
+
+.. py:data:: STAGE_UNDEFINED
+
+   Undefined state. Initially, a system is always assumed to be at this stage
+
+.. py:data:: STAGE_PURGED
+
+   Clean state. Disks are clean and ready for installation.
+
+.. py:data:: STAGE_INSTALLED
+
+   Host system installed and accessible for management through ControlBeast.
+
+.. py:data:: STAGE_PACKAGE_SOURCE
+
+   Host system with package source(s) configured.
+
+.. py:data:: STAGE_PACKAGE_DEPLOYED
+
+   Host system with packages deployed.
+
+.. py:data:: STAGE_SERVICE
+
+   Host system with host services deployed and running.
+
+.. py:data:: STAGE_JAILS
+
+   Complete system with jails deployed.

@@ -1,14 +1,15 @@
 # -*- coding: utf-8 -*-
 """
-    controlbeast.cli.add
+    controlbeast.cli.new
     ~~~~~~~~~~~~~~~~~~~~
 
-    :copyright: Copyright 2013 by the ControlBeast team, see AUTHORS.
+    :copyright: Copyright 2013, 2014 by the ControlBeast team, see AUTHORS.
     :license: ISC, see LICENSE for details.
 """
 import os
 import controlbeast.cli.base
 from controlbeast.conf import get_conf
+from controlbeast.keystore import CbKeyStore
 from controlbeast.scm import scm_get_root, CbSCMRepoError, scm_get_branches, scm_checkout, scm_create_branch
 
 
@@ -60,12 +61,6 @@ class NewCommand(controlbeast.cli.base.CbCommand):
         else:
             source = get_conf('SCM_BRANCH')
 
-        # Check which repository to use
-        try:
-            repository = scm_get_root(path=path)
-        except CbSCMRepoError as err:
-            return self._terminate(err, os.EX_IOERR)
-
         # Test if host identifier already in use
         if name in scm_get_branches(path=path):
             return self._terminate(
@@ -77,9 +72,23 @@ class NewCommand(controlbeast.cli.base.CbCommand):
         if not source in scm_get_branches(path=path):
             return self._terminate('The selected source branch `{}` does not exist.\n'.format(source), os.EX_DATAERR)
 
+        # Check which repository to use
+        try:
+            repository = scm_get_root(path=path)
+        except CbSCMRepoError as err:
+            return self._terminate(err, os.EX_IOERR)
+
         # Switch to source branch, create host branch from it and activate it
         scm_checkout(path=path, name=source)
         scm_create_branch(path=path, name=name)
         scm_checkout(path=path, name=name)
+
+        # Create key store
+        ks = CbKeyStore(
+            file=os.path.join(repository, get_conf('HOST_KEY_STORE')),
+            dict={
+                'stage': get_conf('STAGE_UNDEFINED')
+            }
+        )
 
         self._status = os.EX_OK

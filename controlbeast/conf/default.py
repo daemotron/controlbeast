@@ -50,3 +50,18 @@ HOST_OS_FILE = os.path.join('base', 'os.yml')
 
 # Name of the YAML file containing service configuration
 HOST_SERVICE_FILE = os.path.join('base', 'service.yml')
+
+# Name of the key store file containing arbitrary information
+HOST_KEY_STORE = os.path.join('store', 'status.db')
+
+
+# STAGE CODES
+#############
+
+STAGE_UNDEFINED = 0x000
+STAGE_PURGED = 0x100
+STAGE_INSTALLED = 0x200
+STAGE_PACKAGE_SOURCE = 0x300
+STAGE_PACKAGE_DEPLOYED = 0x400
+STAGE_SERVICE = 0x500
+STAGE_JAILS = 0x600

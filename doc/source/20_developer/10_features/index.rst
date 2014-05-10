@@ -5,4 +5,5 @@ ControlBeast Feature Definition
    :maxdepth: 2
 
    general
+   purge
    install

@@ -1,0 +1,7 @@
+.. |Stage Undefined| replace:: 0x000
+.. |Stage Purged| replace:: 0x100
+.. |Stage Installed| replace:: 0x200
+.. |Stage PackageSource| replace:: 0x300
+.. |Stage PackageDeployed| replace:: 0x400
+.. |Stage Service| replace:: 0x500
+.. |Stage Jails| replace:: 0x600
